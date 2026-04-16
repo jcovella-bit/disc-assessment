@@ -904,9 +904,9 @@ body {
     <div class="gate-title">DISC Behavioral Assessment</div>
     <div class="gate-subtitle">Clarity Partners Coaching Network<br>"Your success depends on clarity."</div>
     <div class="gate-badge-row">
-      <span class="gate-badge">üîí Secure Access</span>
-      <span class="gate-badge">üìä Professional Assessment</span>
-      <span class="gate-badge">‚úÖ One-Time Use</span>
+      <span class="gate-badge">&#128274; Secure Access</span>
+      <span class="gate-badge">&#128202; Professional Assessment</span>
+      <span class="gate-badge">&#9989; One-Time Use</span>
     </div>
     <div class="gate-divider"></div>
     <p style="font-size:14px;color:var(--text-mid);margin-bottom:20px;line-height:1.6;">Enter the access code you received by email to unlock your assessment.</p>
@@ -1386,7 +1386,7 @@ body {
       DISC-C3D4 | group      | 15| 0 | XYZ LLC   | 2026-12-31 | active
 
    3. Publish the sheet as CSV:
-      File ‚Üí Share ‚Üí Publish to web ‚Üí Sheet1 ‚Üí CSV ‚Üí Publish
+      File &rarr; Share &rarr; Publish to web &rarr; Sheet1 &rarr; CSV &rarr; Publish
       Copy the URL and paste it as SHEET_CSV_URL below.
 
    4. To mark codes as used (after someone completes):
@@ -1394,7 +1394,7 @@ body {
       OR use Zapier to auto-update via Google Sheets connector.
 
    5. Generate codes automatically with Zapier:
-      Trigger: Stripe payment ‚Üí Action: Add row to Google Sheet
+      Trigger: Stripe payment &rarr; Action: Add row to Google Sheet
       Use format: DISC-XXXX where XXXX = random 4-char alphanumeric
 
    CODE FORMAT: DISC-XXXX (e.g. DISC-A1B2)
@@ -1448,7 +1448,7 @@ async function submitGateCode() {
   }
 
   if (!ACCESS_CODE_CONFIG.APPS_SCRIPT_URL || ACCESS_CODE_CONFIG.APPS_SCRIPT_URL === '') {
-    showGateError('‚öôÔ∏è Assessment not yet configured. Please contact Clarity Partners at 609-364-6705.');
+    showGateError('&#9881; Assessment not yet configured. Please contact Clarity Partners at 609-364-6705.');
     return;
   }
 
@@ -1478,7 +1478,7 @@ async function submitGateCode() {
     checkEl.style.display = 'none';
     btn.disabled = false;
     input.classList.add('error');
-    showGateError('‚ö†Ô∏è Could not connect to the access code database. Please check your internet connection and try again. If this continues, contact Clarity Partners at 609-364-6705 or jcovella@claritypartnersinc.com.');
+    showGateError('&#9888; Could not connect to the access code database. Please check your internet connection and try again. If this continues, contact Clarity Partners at 609-364-6705 or jcovella@claritypartnersinc.com.');
     console.error('Gate validation error:', err);
   }
 }
@@ -1573,7 +1573,7 @@ function gateUnlocked(data) {
 }
 
 function setSessionBadge(data) {
-  const label = data.type === 'group' ? 'üë• Group Assessment' : 'üë§ Individual Assessment';
+  const label = data.type === 'group' ? '&#128101; Group Assessment' : '&#128100; Individual Assessment';
   const clientLabel = data.clientName ? ' &middot; ' + data.clientName : '';
   // Inject a small badge into the group setup top bar if it exists
   const topBars = document.querySelectorAll('.cover-top-bar, .top-bar');
@@ -2032,7 +2032,7 @@ function buildChartHTML(title, scoreObj) {
 const DISC_NAMES = {D:'Dominance', I:'Influence', S:'Steadiness', C:'Conscientiousness'};
 const DISC_COLORS = {D:'#c0392b', I:'#d4860a', S:'#27855f', C:'#2060a0'};
 const DISC_BG = {D:'#fdf0ef', I:'#fef8ee', S:'#f0faf5', C:'#eef4fc'};
-const DISC_ICONS = {D:'‚ö°', I:'üåü', S:'ü§ù', C:'üîç'};
+const DISC_ICONS = {D:'&#9889;', I:'&#127775;', S:'&#129309;', C:'&#128269;'};
 
 function discColor(t) { return DISC_COLORS[t]; }
 function discColorBg(t) { return DISC_BG[t]; }
@@ -2201,7 +2201,7 @@ function buildNarratives(scores) {
     <!-- SECTION 1: Personal Behavioral Characteristics -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:${discColorBg(p)};font-size:22px;">ü™û</div>
+        <div class="narrative-icon" style="background:${discColorBg(p)};font-size:22px;">&#129694;</div>
         <div>
           <div class="narrative-title">Personal Behavioral Characteristics</div>
           <div class="narrative-subtitle">The unique value ${firstName} brings &mdash; and the tensions to navigate</div>
@@ -2215,7 +2215,7 @@ function buildNarratives(scores) {
     <!-- SECTION 2: DISC Communication Do's and Don'ts -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#eef4fc;font-size:22px;">üìã</div>
+        <div class="narrative-icon" style="background:#eef4fc;font-size:22px;">&#128203;</div>
         <div>
           <div class="narrative-title">DISC Communication Guide &mdash; Do's &amp; Don'ts</div>
           <div class="narrative-subtitle">How to communicate effectively with ${firstName}, and how ${firstName} communicates with others</div>
@@ -2229,7 +2229,7 @@ function buildNarratives(scores) {
     <!-- SECTION 3: Perceptions Under Pressure -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#fff8f0;font-size:22px;">üî¶</div>
+        <div class="narrative-icon" style="background:#fff8f0;font-size:22px;">&#128294;</div>
         <div>
           <div class="narrative-title">Perceptions: How Others See ${firstName}</div>
           <div class="narrative-subtitle">Self-perception, moderate pressure, and major stress responses</div>
@@ -2243,7 +2243,7 @@ function buildNarratives(scores) {
     <!-- Existing: Success & Challenge -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#f0faf5;font-size:22px;">üéØ</div>
+        <div class="narrative-icon" style="background:#f0faf5;font-size:22px;">&#127919;</div>
         <div>
           <div class="narrative-title">Where ${firstName} Thrives &mdash; and Where It Gets Hard</div>
           <div class="narrative-subtitle">Environments and scenarios aligned (or misaligned) with ${firstName}'s natural style</div>
@@ -2251,11 +2251,11 @@ function buildNarratives(scores) {
       </div>
       <div class="two-col" style="margin-top:8px;">
         <div class="insight-block">
-          <div class="insight-block-title success">‚úì Best Scenarios for Success</div>
+          <div class="insight-block-title success">&#10003; Best Scenarios for Success</div>
           <ul class="insight-list">${successHtml}</ul>
         </div>
         <div class="insight-block">
-          <div class="insight-block-title challenge">‚Üí Challenging Scenarios</div>
+          <div class="insight-block-title challenge">&rarr; Challenging Scenarios</div>
           <ul class="insight-list challenge-list">${challengeHtml}</ul>
         </div>
       </div>
@@ -2264,7 +2264,7 @@ function buildNarratives(scores) {
     <!-- SECTION 4: Natural vs. Adapted Style (expanded) -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#f0faf5;font-size:22px;">üß†</div>
+        <div class="narrative-icon" style="background:#f0faf5;font-size:22px;">&#129504;</div>
         <div>
           <div class="narrative-title">Natural Style vs. Adapted Style</div>
           <div class="narrative-subtitle">Understanding the two sides of ${firstName}'s behavioral profile</div>
@@ -2277,7 +2277,7 @@ function buildNarratives(scores) {
 
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#fef8ee;font-size:22px;">üöÄ</div>
+        <div class="narrative-icon" style="background:#fef8ee;font-size:22px;">&#128640;</div>
         <div>
           <div class="narrative-title">Coaching Insights &amp; Development Focus</div>
           <div class="narrative-subtitle">Opportunities to maximize ${firstName}'s impact and effectiveness</div>
@@ -2458,8 +2458,8 @@ function buildDosAndDonts(scores, firstName) {
 
   const pw = withPerson[p];
   const cs = crossStyle[p];
-  const dosHtml = pw.dos.map(d => `<li style="padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-mid);"><span style="position:absolute;left:4px;color:#38a169;font-weight:700;">‚úì</span>${d}</li>`).join('');
-  const dontsHtml = pw.donts.map(d => `<li style="padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-mid);"><span style="position:absolute;left:4px;color:#c0392b;font-weight:700;">‚úó</span>${d}</li>`).join('');
+  const dosHtml = pw.dos.map(d => `<li style="padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-mid);"><span style="position:absolute;left:4px;color:#38a169;font-weight:700;">&#10003;</span>${d}</li>`).join('');
+  const dontsHtml = pw.donts.map(d => `<li style="padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-mid);"><span style="position:absolute;left:4px;color:#c0392b;font-weight:700;">&#10007;</span>${d}</li>`).join('');
 
   const otherStyles = ['D','I','S','C'].filter(t => t !== p);
   const crossKeys = { D: ['withI','withS','withC'], I: ['withD','withS','withC'], S: ['withD','withI','withC'], C: ['withD','withI','withS'] };
@@ -2475,11 +2475,11 @@ function buildDosAndDonts(scores, firstName) {
 
     <div class="two-col" style="margin-bottom:24px;">
       <div>
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#27855f;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #27855f;">‚úì Do These Things</div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#27855f;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #27855f;">&#10003; Do These Things</div>
         <ul style="list-style:none;padding:0;margin:0;">${dosHtml}</ul>
       </div>
       <div>
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#c0392b;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #c0392b;">‚úó Avoid These Things</div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#c0392b;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #c0392b;">&#10007; Avoid These Things</div>
         <ul style="list-style:none;padding:0;margin:0;">${dontsHtml}</ul>
       </div>
     </div>
@@ -2531,7 +2531,7 @@ function buildPerceptions(scores, firstName) {
 
     <div style="margin-bottom:18px;">
       <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:${discColorBg(p)};border-radius:8px 8px 0 0;border:1.5px solid ${discColor(p)};border-bottom:none;">
-        <span style="font-size:18px;">üôÇ</span>
+        <span style="font-size:18px;">&#128578;</span>
         <div style="font-size:13px;font-weight:700;color:${discColor(p)};text-transform:uppercase;letter-spacing:.06em;">${firstName}'s Self-Perception</div>
       </div>
       <div style="padding:16px 20px;background:var(--white);border:1.5px solid ${discColor(p)};border-top:none;border-radius:0 0 8px 8px;font-size:14px;color:var(--text-mid);line-height:1.75;">${d.selfView}</div>
@@ -2539,7 +2539,7 @@ function buildPerceptions(scores, firstName) {
 
     <div style="margin-bottom:18px;">
       <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff8e8;border-radius:8px 8px 0 0;border:1.5px solid #d4860a;border-bottom:none;">
-        <span style="font-size:18px;">‚ö†Ô∏è</span>
+        <span style="font-size:18px;">&#9888;</span>
         <div>
           <div style="font-size:13px;font-weight:700;color:#d4860a;text-transform:uppercase;letter-spacing:.06em;">Under Moderate Pressure</div>
           <div style="font-size:11px;color:#a0856a;">How others may begin to perceive ${firstName}</div>
@@ -2550,7 +2550,7 @@ function buildPerceptions(scores, firstName) {
 
     <div style="margin-bottom:18px;">
       <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fdf0ef;border-radius:8px 8px 0 0;border:1.5px solid #c0392b;border-bottom:none;">
-        <span style="font-size:18px;">üî¥</span>
+        <span style="font-size:18px;">&#128308;</span>
         <div>
           <div style="font-size:13px;font-weight:700;color:#c0392b;text-transform:uppercase;letter-spacing:.06em;">Under Major Pressure or Stress</div>
           <div style="font-size:11px;color:#a0856a;">How others may perceive ${firstName} in more negative ways</div>
@@ -2591,11 +2591,11 @@ function buildNaturalVsAdapted(scores, firstName) {
   return `
     <div class="two-col" style="margin-bottom:20px;">
       <div style="padding:18px 20px;background:var(--cp-light);border-radius:10px;border:1.5px solid var(--border);">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--cp-navy);margin-bottom:8px;">üåø Natural Style</div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--cp-navy);margin-bottom:8px;">&#127807; Natural Style</div>
         <p style="font-size:14px;color:var(--text-mid);line-height:1.7;margin:0;">${firstName}'s <strong>Natural Style</strong> reflects how ${firstName} behaves when relaxed, authentic, and free from environmental pressure &mdash; the "real ${firstName}" when not adapting to situational demands. This is the foundation of ${firstName}'s behavioral identity, and it is remarkably stable across time and context.</p>
       </div>
       <div style="padding:18px 20px;background:#fff8f0;border-radius:10px;border:1.5px solid #e2c4a0;">
-        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#c05621;margin-bottom:8px;">‚öôÔ∏è Adapted Style</div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#c05621;margin-bottom:8px;">&#9881; Adapted Style</div>
         <p style="font-size:14px;color:var(--text-mid);line-height:1.7;margin:0;">${firstName}'s <strong>Adapted Style</strong> reflects how ${firstName} adjusts behavior to meet the demands of the current environment, role, or situation. This is the version of ${firstName} that colleagues observe day-to-day, and it may look different from the Natural Style depending on how much adaptation the context requires.</p>
       </div>
     </div>
@@ -2671,7 +2671,7 @@ function buildTeamReport() {
     const p = d.scores.primary;
     const s = d.scores.secondary;
     const profile = getProfileLabel(p, s);
-    const groupTag = d.group ? `<span class="group-tag" style="margin-left:6px;">üè¢ ${d.group}</span>` : '';
+    const groupTag = d.group ? `<span class="group-tag" style="margin-left:6px;">&#127962; ${d.group}</span>` : '';
     return `<div class="team-participant-row">
       <div class="participant-avatar" style="background:${discColor(p)};">${initials}</div>
       <div class="participant-info">
@@ -2761,7 +2761,7 @@ function buildStyleGroups(teamData) {
       color: '#c0392b',
       bg: '#fdf2f1',
       border: '#e8a09a',
-      icon: 'üî¥',
+      icon: '&#128308;',
       tagline: 'Results-focused, direct, decisive, competitive',
       workStyle: 'D-style individuals are driven by results, challenge, and authority. They thrive when given autonomy and clear goals, and they move quickly toward outcomes.',
       communicationTips: [
@@ -2782,7 +2782,7 @@ function buildStyleGroups(teamData) {
       color: '#d4900a',
       bg: '#fffaf0',
       border: '#f5d08a',
-      icon: 'üü°',
+      icon: '&#128993;',
       tagline: 'Enthusiastic, collaborative, optimistic, people-focused',
       workStyle: 'I-style individuals are energized by people, recognition, and enthusiasm. They excel at building relationships, inspiring others, and creating a positive team atmosphere.',
       communicationTips: [
@@ -2803,7 +2803,7 @@ function buildStyleGroups(teamData) {
       color: '#27ae60',
       bg: '#f2faf5',
       border: '#90d4a8',
-      icon: 'üü¢',
+      icon: '&#128994;',
       tagline: 'Dependable, patient, loyal, team-oriented',
       workStyle: 'S-style individuals value harmony, consistency, and meaningful relationships. They are the backbone of a stable team &mdash; reliable, supportive, and highly attuned to the needs of those around them.',
       communicationTips: [
@@ -2824,7 +2824,7 @@ function buildStyleGroups(teamData) {
       color: '#2980b9',
       bg: '#f1f7fd',
       border: '#8ec6eb',
-      icon: 'üîµ',
+      icon: '&#128309;',
       tagline: 'Analytical, accurate, systematic, quality-driven',
       workStyle: 'C-style individuals are motivated by accuracy, expertise, and doing things right. They bring rigor, thoroughness, and a commitment to quality that raises the standard for the entire team.',
       communicationTips: [
@@ -3242,13 +3242,13 @@ function buildJerryEmailHtml(scores, info, isTeamUpdate) {
   </tr>`;
 
   const groupBadge = groupName
-    ? `<span style="display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:4px 14px;font-size:12px;font-weight:700;color:white;margin-top:10px;">üè¢ ${groupName}</span>`
+    ? `<span style="display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:4px 14px;font-size:12px;font-weight:700;color:white;margin-top:10px;">&#127962; ${groupName}</span>`
     : '';
 
   const allGroupsSummary = multiGroup && totalAll > count ? `
   <div style="padding:16px 36px 0;">
     <div style="background:#fff8e8;border:1px solid #f6c94e;border-radius:8px;padding:14px 18px;font-size:13px;color:#744210;">
-      <strong>üìä All Groups:</strong> ${totalAll} total participants across ${getKnownGroups().length} groups.
+      <strong>&#128202; All Groups:</strong> ${totalAll} total participants across ${getKnownGroups().length} groups.
       This report shows the <strong>${groupName}</strong> group (${count} participant${count!==1?'s':''}).
     </div>
   </div>` : '';
@@ -3333,7 +3333,7 @@ function buildJerryEmailHtml(scores, info, isTeamUpdate) {
 function buildTestEmailHtml() {
   return `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#f4f7fb;padding:40px;">
 <div style="max-width:480px;margin:0 auto;background:white;border-radius:12px;padding:36px;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
-  <div style="font-size:32px;text-align:center;margin-bottom:16px;">‚úÖ</div>
+  <div style="font-size:32px;text-align:center;margin-bottom:16px;">&#9989;</div>
   <h2 style="text-align:center;color:#1a3a5c;margin:0 0 12px;">Email Configuration Successful</h2>
   <p style="color:#4a5568;text-align:center;font-size:14px;">Your Clarity Partners DISC Assessment is now configured to send assessment results automatically &mdash; no extra steps required.</p>
   <div style="background:#e8f0fb;border-radius:8px;padding:16px;margin-top:20px;font-size:13px;color:#2060a0;text-align:center;">
@@ -3380,21 +3380,21 @@ async function sendAllEmails(scores, info) {
   var rptMsg  = document.getElementById('rpt-email-msg');
   if (!EMAIL.isReady()) {
     // Fallback: open mailto: links
-    if (rptIcon) rptIcon.textContent = 'üì®';
+    if (rptIcon) rptIcon.textContent = '&#128232;';
     if (rptMsg) rptMsg.innerHTML = ' Email draft opened &mdash; click Send in your email client.';
     sendMailtoFallback(scores, info);
-    showToast('üì®', 'Email draft opened', 'Click Send in your email client to deliver. Configure EmailJS for fully automatic delivery.', 8000);
+    showToast('&#128232;', 'Email draft opened', 'Click Send in your email client to deliver. Configure EmailJS for fully automatic delivery.', 8000);
     return;
   }
   // Update inline status on report screen
-  if (rptIcon) rptIcon.textContent = '‚è≥';
+  if (rptIcon) rptIcon.textContent = '&#9203;';
   if (rptMsg)  rptMsg.textContent  = ' Sending reports automatically&hellip;';
 
   if (typeof emailjs === 'undefined') {
     sendMailtoFallback(scores, info);
-    if (rptIcon) rptIcon.textContent = 'üì®';
+    if (rptIcon) rptIcon.textContent = '&#128232;';
     if (rptMsg) rptMsg.innerHTML = ' Email draft opened &mdash; EmailJS library unavailable.';
-    showToast('‚ö†', 'EmailJS not loaded', 'Using email draft fallback instead.', 6000);
+    showToast('&#9888;', 'EmailJS not loaded', 'Using email draft fallback instead.', 6000);
     return;
   }
   try {
@@ -3418,16 +3418,16 @@ async function sendAllEmails(scores, info) {
     );
 
     await Promise.all([p1, p2]);
-    if (rptIcon) rptIcon.textContent = '‚úÖ';
+    if (rptIcon) rptIcon.textContent = '&#9989;';
     if (rptMsg) rptMsg.innerHTML = `Your personal report has been sent to <strong>${info.email}</strong>. The group report has been sent to your coach.`;
-    showToast('‚úÖ', 'Reports delivered', `Your personal report ‚Üí ${info.email}`, 6000);
+    showToast('&#9989;', 'Reports delivered', `Your personal report &rarr; ${info.email}`, 6000);
   } catch(e) {
     console.error('EmailJS error:', e);
     // Fallback to mailto on error
     sendMailtoFallback(scores, info);
-    if (rptIcon) rptIcon.textContent = 'üì®';
+    if (rptIcon) rptIcon.textContent = '&#128232;';
     if (rptMsg) rptMsg.innerHTML = ' Email draft opened &mdash; click Send in your email client.';
-    showToast('‚ö†', 'Auto-send failed', 'Email draft opened as fallback. Check your EmailJS configuration.', 8000);
+    showToast('&#9888;', 'Auto-send failed', 'Email draft opened as fallback. Check your EmailJS configuration.', 8000);
   }
 }
 
@@ -3436,12 +3436,12 @@ async function resendTeamReport() {
   const last = teamData[teamData.length - 1];
   if (!EMAIL.isReady()) {
     sendTeamMailtoFallback();
-    showToast('üì®', 'Team report draft opened', 'Click Send in your email client.', 6000);
+    showToast('&#128232;', 'Team report draft opened', 'Click Send in your email client.', 6000);
     return;
   }
   if (typeof emailjs === 'undefined') {
     sendTeamMailtoFallback();
-    showToast('‚ö†', 'EmailJS not loaded', 'Using email draft fallback instead.', 6000);
+    showToast('&#9888;', 'EmailJS not loaded', 'Using email draft fallback instead.', 6000);
     return;
   }
   try {
@@ -3452,10 +3452,10 @@ async function resendTeamReport() {
       `DISC Group Update &mdash; ${activeGroupFilter !== '__all__' ? activeGroupFilter + ' &middot; ' : ''}${teamData.length} Participants &mdash; ${new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'})}`,
       jerryHtml
     );
-    showToast('‚úÖ', 'Group report sent', `Updated group summary ‚Üí your coach`, 5000);
+    showToast('&#9989;', 'Group report sent', `Updated group summary &rarr; your coach`, 5000);
   } catch(e) {
     sendTeamMailtoFallback();
-    showToast('‚ö†', 'Auto-send failed', 'Email draft opened as fallback.', 6000);
+    showToast('&#9888;', 'Auto-send failed', 'Email draft opened as fallback.', 6000);
   }
 }
 
@@ -3558,7 +3558,7 @@ function hideToast() {
    RESET ALL RESULTS
 =================================================== */
 function confirmReset() {
-  if (!confirm('‚ö† RESET ALL RESULTS\n\nThis will clear all participant data, group data, and team scores for this session.\n\nThis cannot be undone. Are you sure?')) return;
+  if (!confirm('&#9888; RESET ALL RESULTS\n\nThis will clear all participant data, group data, and team scores for this session.\n\nThis cannot be undone. Are you sure?')) return;
   teamData = [];
   currentScores = null;
   currentGroup = '';
@@ -3574,7 +3574,7 @@ function confirmReset() {
   selectGroupMode('new');
   try { localStorage.removeItem('disc_team_data'); } catch(e) {}
   showScreen('group');
-  showToast('üîÑ', 'Session reset', 'All participant and group data cleared. Ready for a new session.', 4000);
+  showToast('&#128260;', 'Session reset', 'All participant and group data cleared. Ready for a new session.', 4000);
 }
 
 /* ===================================================
@@ -3660,7 +3660,7 @@ if (document.readyState === 'loading') {
    into your Google Sheet. Change the admin password
    below before deploying.
 =================================================== */
-const ADMIN_PASSWORD = 'CLARITY2025'; // ‚Üê Change this before going live
+const ADMIN_PASSWORD = 'CLARITY2025'; // &larr; Change this before going live
 
 function checkAdminAccess() {
   const params = new URLSearchParams(window.location.search);
@@ -3714,9 +3714,9 @@ function copyAdminCodes() {
   out.select();
   document.execCommand('copy');
   const btn = document.getElementById('admin-copy-btn');
-  btn.textContent = '‚úì Copied!';
+  btn.textContent = '&#10003; Copied!';
   btn.style.background = '#38a169';
-  setTimeout(() => { btn.textContent = 'üìã Copy for Google Sheet'; btn.style.background = '#2060a0'; }, 2000);
+  setTimeout(() => { btn.textContent = '&#128203; Copy for Google Sheet'; btn.style.background = '#2060a0'; }, 2000);
 }
 
 // Run admin check after DOM is ready
@@ -3733,8 +3733,8 @@ if (document.readyState === 'loading') {
 <div id="admin-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;overflow-y:auto;padding:20px;">
   <div style="max-width:760px;margin:0 auto;background:white;border-radius:16px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-      <div style="font-size:22px;font-weight:800;color:#1a3a5c;">‚öôÔ∏è Admin: Access Code Generator</div>
-      <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:#e53e3e;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;">‚úï Close</button>
+      <div style="font-size:22px;font-weight:800;color:#1a3a5c;">&#9881; Admin: Access Code Generator</div>
+      <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:#e53e3e;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;">&#10005; Close</button>
     </div>
     <div style="font-size:13px;color:#718096;margin-bottom:28px;">Generate codes, then paste them into your Google Sheet to activate.</div>
 
@@ -3785,17 +3785,17 @@ if (document.readyState === 'loading') {
     <textarea id="admin-output" style="position:absolute;left:-9999px;top:0;" readonly></textarea>
 
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-      <button id="admin-copy-btn" onclick="copyAdminCodes()" style="background:#2060a0;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;">üìã Copy for Google Sheet</button>
-      <button onclick="generateBatchCodes()" style="background:#e8f0fb;color:#2060a0;border:1.5px solid #bee3f8;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;">üîÑ Regenerate</button>
+      <button id="admin-copy-btn" onclick="copyAdminCodes()" style="background:#2060a0;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;">&#128203; Copy for Google Sheet</button>
+      <button onclick="generateBatchCodes()" style="background:#e8f0fb;color:#2060a0;border:1.5px solid #bee3f8;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;">&#128260; Regenerate</button>
       <span style="font-size:12px;color:#718096;">Paste into your Google Sheet &mdash; each row is one code.<br>Columns: code | type | uses_allowed | uses_used | client_name | expiry | status</span>
     </div>
 
     <div style="margin-top:28px;padding:20px;background:#fff8e8;border:1px solid #f6c94e;border-radius:10px;">
-      <div style="font-size:13px;font-weight:700;color:#744210;margin-bottom:10px;">üìã Google Sheet Setup Reminder</div>
+      <div style="font-size:13px;font-weight:700;color:#744210;margin-bottom:10px;">&#128203; Google Sheet Setup Reminder</div>
       <div style="font-size:13px;color:#744210;line-height:1.7;">
         <strong>Column headers (row 1):</strong> code &middot; type &middot; uses_allowed &middot; uses_used &middot; client_name &middot; expiry &middot; status<br>
         <strong>Paste codes:</strong> starting at row 2<br>
-        <strong>Publish sheet:</strong> File ‚Üí Share ‚Üí Publish to web ‚Üí Sheet1 ‚Üí CSV ‚Üí copy URL ‚Üí paste into <code style="background:#fef3cd;padding:2px 6px;border-radius:4px;">ACCESS_CODE_CONFIG.SHEET_CSV_URL</code><br>
+        <strong>Publish sheet:</strong> File &rarr; Share &rarr; Publish to web &rarr; Sheet1 &rarr; CSV &rarr; copy URL &rarr; paste into <code style="background:#fef3cd;padding:2px 6px;border-radius:4px;">ACCESS_CODE_CONFIG.SHEET_CSV_URL</code><br>
         <strong>Mark used:</strong> When a code is used, update <em>uses_used</em> column (or automate via Zapier)
       </div>
     </div>
