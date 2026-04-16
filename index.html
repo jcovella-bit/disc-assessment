@@ -904,9 +904,9 @@ body {
     <div class="gate-title">DISC Behavioral Assessment</div>
     <div class="gate-subtitle">Clarity Partners Coaching Network<br>"Your success depends on clarity."</div>
     <div class="gate-badge-row">
-      <span class="gate-badge">🔒 Secure Access</span>
-      <span class="gate-badge">📊 Professional Assessment</span>
-      <span class="gate-badge">✅ One-Time Use</span>
+      <span class="gate-badge">üîí Secure Access</span>
+      <span class="gate-badge">üìä Professional Assessment</span>
+      <span class="gate-badge">‚úÖ One-Time Use</span>
     </div>
     <div class="gate-divider"></div>
     <p style="font-size:14px;color:var(--text-mid);margin-bottom:20px;line-height:1.6;">Enter the access code you received by email to unlock your assessment.</p>
@@ -917,7 +917,7 @@ body {
         class="gate-input"
         type="text"
         placeholder="XXXX-XXXX"
-        maxlength="9"
+        maxlength="40"
         autocomplete="off"
         autocorrect="off"
         autocapitalize="characters"
@@ -1375,7 +1375,7 @@ body {
 <script>
 /* ===================================================
    ACCESS CODE GATE SYSTEM
-   ─────────────────────────────────────────────────
+   ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
    SETUP INSTRUCTIONS (one-time, 10 minutes):
 
    1. Create a Google Sheet with these columns in row 1:
@@ -1386,7 +1386,7 @@ body {
       DISC-C3D4 | group      | 15| 0 | XYZ LLC   | 2026-12-31 | active
 
    3. Publish the sheet as CSV:
-      File → Share → Publish to web → Sheet1 → CSV → Publish
+      File ‚Üí Share ‚Üí Publish to web ‚Üí Sheet1 ‚Üí CSV ‚Üí Publish
       Copy the URL and paste it as SHEET_CSV_URL below.
 
    4. To mark codes as used (after someone completes):
@@ -1394,22 +1394,22 @@ body {
       OR use Zapier to auto-update via Google Sheets connector.
 
    5. Generate codes automatically with Zapier:
-      Trigger: Stripe payment → Action: Add row to Google Sheet
+      Trigger: Stripe payment ‚Üí Action: Add row to Google Sheet
       Use format: DISC-XXXX where XXXX = random 4-char alphanumeric
 
    CODE FORMAT: DISC-XXXX (e.g. DISC-A1B2)
 =================================================== */
 
 const ACCESS_CODE_CONFIG = {
-  // ── PASTE YOUR GOOGLE SHEET CSV PUBLISH URL BELOW ──────────────────
+  // ‚îÄ‚îÄ PASTE YOUR GOOGLE SHEET CSV PUBLISH URL BELOW ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
   // Example: 'https://docs.google.com/spreadsheets/d/SHEET_ID/pub?gid=0&single=true&output=csv'
   SHEET_CSV_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQNYJT1sz4UvtPz58pn0PcSktW6WATXZLAdXICQm1OWHyOzDniJVIqdT8x1yKZNkpK4PObhUs2ZLbg1/pub?output=csv',
-  // ── GOOGLE APPS SCRIPT WEB APP URL (replaces CSV fetch — no CORS issues) ──
+  // ‚îÄ‚îÄ GOOGLE APPS SCRIPT WEB APP URL (replaces CSV fetch ‚Äî no CORS issues) ‚îÄ‚îÄ
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbyj6U4g6KyoqE1V2cd9YfASpOqV2D9w0zX2VsrPFT8mNDxC0ktcgzPupC9pV4msL0JZHA/exec',
-  // ── ZAPIER WEBHOOK URL (optional — for marking codes used in real-time)
+  // ‚îÄ‚îÄ ZAPIER WEBHOOK URL (optional ‚Äî for marking codes used in real-time)
   // Example: 'https://hooks.zapier.com/hooks/catch/XXXXXX/YYYYYY/'
   ZAPIER_WEBHOOK_URL: '',
-  // ── Set to true during testing to bypass code check ──────────────
+  // ‚îÄ‚îÄ Set to true during testing to bypass code check ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
   DEV_MODE: false,
   DEV_BYPASS_CODE: 'DISC-TEST'
 };
@@ -1418,13 +1418,7 @@ let validatedCodeData = null; // stores the validated code row data
 
 /* Format the input as user types: DISC-XXXX */
 function formatGateCode(input) {
-  let val = input.value.toUpperCase().replace(/[^A-Z0-9\-]/g, '');
-  // Auto-insert dash after DISC if user is typing
-  if (val.length >= 4 && val[4] !== '-') {
-    val = val.substring(0, 4) + '-' + val.substring(4);
-  }
-  // Limit to 9 chars (DISC-XXXX)
-  input.value = val.substring(0, 9);
+  // Allow any characters ‚Äî don't truncate or uppercase
   // Reset error state
   input.classList.remove('error', 'success');
   document.getElementById('gate-error').style.display = 'none';
@@ -1432,7 +1426,7 @@ function formatGateCode(input) {
 
 async function submitGateCode() {
   const input = document.getElementById('gate-code-input');
-  const code = input.value.trim().toUpperCase();
+  const code = input.value.trim();
   const errEl = document.getElementById('gate-error');
   const checkEl = document.getElementById('gate-checking');
   const btn = document.getElementById('gate-btn');
@@ -1441,8 +1435,8 @@ async function submitGateCode() {
   checkEl.style.display = 'none';
 
   // Basic format check
-  if (!code || code.length < 6) {
-    showGateError('Please enter your complete access code (format: DISC-XXXX).');
+  if (!code || code.length < 5) {
+    showGateError('Please enter your complete access code.');
     return;
   }
 
@@ -1454,7 +1448,7 @@ async function submitGateCode() {
   }
 
   if (!ACCESS_CODE_CONFIG.APPS_SCRIPT_URL || ACCESS_CODE_CONFIG.APPS_SCRIPT_URL === '') {
-    showGateError('⚙️ Assessment not yet configured. Please contact Clarity Partners at 609-364-6705.');
+    showGateError('‚öôÔ∏è Assessment not yet configured. Please contact Clarity Partners at 609-364-6705.');
     return;
   }
 
@@ -1484,7 +1478,7 @@ async function submitGateCode() {
     checkEl.style.display = 'none';
     btn.disabled = false;
     input.classList.add('error');
-    showGateError('⚠️ Could not connect to the access code database. Please check your internet connection and try again. If this continues, contact Clarity Partners at 609-364-6705 or jcovella@claritypartnersinc.com.');
+    showGateError('‚ö†Ô∏è Could not connect to the access code database. Please check your internet connection and try again. If this continues, contact Clarity Partners at 609-364-6705 or jcovella@claritypartnersinc.com.');
     console.error('Gate validation error:', err);
   }
 }
@@ -1499,10 +1493,10 @@ async function validateCodeAgainstSheet(code) {
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
     if (!row.code) continue;
-    const rowCode = String(row.code).trim().toUpperCase();
-    if (rowCode !== code) continue;
+    const rowCode = String(row.code).trim().toLowerCase();
+    if (rowCode !== code.toLowerCase()) continue;
 
-    // Found matching code — extract fields
+    // Found matching code ‚Äî extract fields
     const type        = String(row.type || 'individual').trim().toLowerCase();
     const usesAllowed = parseInt(row.uses_allowed) || 1;
     const usesUsed    = parseInt(row.uses_used) || 0;
@@ -1560,7 +1554,7 @@ async function pingZapierCodeUsed(code, data) {
 
 function showGateError(msg) {
   const errEl = document.getElementById('gate-error');
-  errEl.textContent = '✖ ' + msg;
+  errEl.textContent = '‚úñ ' + msg;
   errEl.style.display = 'block';
 }
 
@@ -1579,8 +1573,8 @@ function gateUnlocked(data) {
 }
 
 function setSessionBadge(data) {
-  const label = data.type === 'group' ? '👥 Group Assessment' : '👤 Individual Assessment';
-  const clientLabel = data.clientName ? ' · ' + data.clientName : '';
+  const label = data.type === 'group' ? 'üë• Group Assessment' : 'üë§ Individual Assessment';
+  const clientLabel = data.clientName ? ' ¬∑ ' + data.clientName : '';
   // Inject a small badge into the group setup top bar if it exists
   const topBars = document.querySelectorAll('.cover-top-bar, .top-bar');
   topBars.forEach(bar => {
@@ -1642,7 +1636,7 @@ const QUESTIONS = [
 let currentScreen = 'group';
 let userInfo = {};
 let responses = new Array(25).fill(null).map(() => ({most: null, least: null}));
-let currentQPage = 0; // 0–4
+let currentQPage = 0; // 0‚Äì4
 const Q_PER_PAGE = 5;
 const TOTAL_PAGES = 5;
 let teamData = [];
@@ -1675,7 +1669,7 @@ function selectGroupMode(mode) {
 
 function populateGroupJoinList() {
   const sel = document.getElementById('g-join-select');
-  sel.innerHTML = '<option value="">— choose a group —</option>';
+  sel.innerHTML = '<option value="">‚Äî choose a group ‚Äî</option>';
   const groups = getKnownGroups();
   groups.forEach(g => {
     const count = teamData.filter(d => d.group === g).length;
@@ -1773,7 +1767,7 @@ function updateGroupFilterCount() {
   const filtered = getFilteredTeamData();
   const el = document.getElementById('group-filter-count');
   if (el) el.textContent = activeGroupFilter === '__all__'
-    ? '' : `— showing ${filtered.length} of ${teamData.length} participants`;
+    ? '' : `‚Äî showing ${filtered.length} of ${teamData.length} participants`;
 }
 
 function getFilteredTeamData() {
@@ -1961,7 +1955,7 @@ function calculateAndShowReport() {
     saveTeamData();
     buildIndividualReport(scores);
     showScreen('report');
-    // Auto-send emails immediately — no user action needed
+    // Auto-send emails immediately ‚Äî no user action needed
     await sendAllEmails(scores, userInfo);
   }, 1800);
 }
@@ -2005,7 +1999,7 @@ function buildIndividualReport(scores) {
   tableBody.innerHTML = ['D','I','S','C'].map((t, i) => {
     const bg = i % 2 === 0 ? 'var(--bg)' : 'white';
     return `<tr style="background:${bg};">
-      <td style="padding:12px 14px;font-weight:600;color:${discColor(t)};">${t} – ${discName(t)}</td>
+      <td style="padding:12px 14px;font-weight:600;color:${discColor(t)};">${t} ‚Äì ${discName(t)}</td>
       <td style="padding:12px 14px;">${scores.natural[t]}%</td>
       <td style="padding:12px 14px;">${scores.adapted[t]}%</td>
       <td style="padding:12px 14px;"><span style="background:${discColorBg(t)};color:${discColor(t)};padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700;">${getIntensity(scores.natural[t])}</span></td>
@@ -2038,7 +2032,7 @@ function buildChartHTML(title, scoreObj) {
 const DISC_NAMES = {D:'Dominance', I:'Influence', S:'Steadiness', C:'Conscientiousness'};
 const DISC_COLORS = {D:'#c0392b', I:'#d4860a', S:'#27855f', C:'#2060a0'};
 const DISC_BG = {D:'#fdf0ef', I:'#fef8ee', S:'#f0faf5', C:'#eef4fc'};
-const DISC_ICONS = {D:'⚡', I:'🌟', S:'🤝', C:'🔍'};
+const DISC_ICONS = {D:'‚ö°', I:'üåü', S:'ü§ù', C:'üîç'};
 
 function discColor(t) { return DISC_COLORS[t]; }
 function discColorBg(t) { return DISC_BG[t]; }
@@ -2055,22 +2049,22 @@ function getIntensity(score) {
 
 function getProfileLabel(primary, secondary) {
   const labels = {
-    D:  {name:'The Driver', subtitle:'Direct · Results-Focused · Decisive'},
-    DI: {name:'The Trailblazer', subtitle:'Bold · Inspiring · Action-Oriented'},
-    DC: {name:'The Strategist', subtitle:'Decisive · Precise · Independent'},
-    DS: {name:'The Producer', subtitle:'Goal-Driven · Persistent · Dependable'},
-    I:  {name:'The Inspirer', subtitle:'Enthusiastic · Persuasive · People-First'},
-    ID: {name:'The Motivator', subtitle:'Dynamic · Confident · Energizing'},
-    IS: {name:'The Collaborator', subtitle:'Warm · Encouraging · Relationship-Focused'},
-    IC: {name:'The Promoter', subtitle:'Creative · Communicative · Idea-Driven'},
-    S:  {name:'The Supporter', subtitle:'Reliable · Patient · Team-Centered'},
-    SD: {name:'The Coordinator', subtitle:'Steady · Systematic · Goal-Aware'},
-    SI: {name:'The Harmonizer', subtitle:'Caring · Friendly · Loyal'},
-    SC: {name:'The Specialist', subtitle:'Methodical · Accurate · Consistent'},
-    C:  {name:'The Analyzer', subtitle:'Precise · Systematic · Quality-Focused'},
-    CD: {name:'The Architect', subtitle:'Strategic · Exacting · Independent'},
-    CI: {name:'The Evaluator', subtitle:'Thoughtful · Articulate · Standards-Driven'},
-    CS: {name:'The Perfectionist', subtitle:'Careful · Loyal · Process-Oriented'}
+    D:  {name:'The Driver', subtitle:'Direct ¬∑ Results-Focused ¬∑ Decisive'},
+    DI: {name:'The Trailblazer', subtitle:'Bold ¬∑ Inspiring ¬∑ Action-Oriented'},
+    DC: {name:'The Strategist', subtitle:'Decisive ¬∑ Precise ¬∑ Independent'},
+    DS: {name:'The Producer', subtitle:'Goal-Driven ¬∑ Persistent ¬∑ Dependable'},
+    I:  {name:'The Inspirer', subtitle:'Enthusiastic ¬∑ Persuasive ¬∑ People-First'},
+    ID: {name:'The Motivator', subtitle:'Dynamic ¬∑ Confident ¬∑ Energizing'},
+    IS: {name:'The Collaborator', subtitle:'Warm ¬∑ Encouraging ¬∑ Relationship-Focused'},
+    IC: {name:'The Promoter', subtitle:'Creative ¬∑ Communicative ¬∑ Idea-Driven'},
+    S:  {name:'The Supporter', subtitle:'Reliable ¬∑ Patient ¬∑ Team-Centered'},
+    SD: {name:'The Coordinator', subtitle:'Steady ¬∑ Systematic ¬∑ Goal-Aware'},
+    SI: {name:'The Harmonizer', subtitle:'Caring ¬∑ Friendly ¬∑ Loyal'},
+    SC: {name:'The Specialist', subtitle:'Methodical ¬∑ Accurate ¬∑ Consistent'},
+    C:  {name:'The Analyzer', subtitle:'Precise ¬∑ Systematic ¬∑ Quality-Focused'},
+    CD: {name:'The Architect', subtitle:'Strategic ¬∑ Exacting ¬∑ Independent'},
+    CI: {name:'The Evaluator', subtitle:'Thoughtful ¬∑ Articulate ¬∑ Standards-Driven'},
+    CS: {name:'The Perfectionist', subtitle:'Careful ¬∑ Loyal ¬∑ Process-Oriented'}
   };
   const key = secondary ? primary + secondary : primary;
   return labels[key] || labels[primary] || {name:'Balanced Profile', subtitle:'Well-rounded across all four dimensions'};
@@ -2078,7 +2072,7 @@ function getProfileLabel(primary, secondary) {
 
 const NARRATIVES = {
   D: {
-    overview: `You approach the world with a results-first mindset. You are energized by challenge, fueled by competition, and most comfortable when you are in control of your environment and outcomes. Others see you as confident, decisive, and direct—sometimes to the point of bluntness. Your drive is one of your greatest assets, pushing projects forward and rallying people around ambitious goals.`,
+    overview: `You approach the world with a results-first mindset. You are energized by challenge, fueled by competition, and most comfortable when you are in control of your environment and outcomes. Others see you as confident, decisive, and direct‚Äîsometimes to the point of bluntness. Your drive is one of your greatest assets, pushing projects forward and rallying people around ambitious goals.`,
     communication: `Your communication style is direct, concise, and to the point. You cut through small talk and get to the bottom line quickly. You prefer communication that is clear, factual, and action-oriented. You can come across as intense or impatient to others who prefer a more conversational approach, but your intent is always efficiency.`,
     successItems: [
       'Leadership roles with clear authority and autonomy',
@@ -2123,7 +2117,7 @@ const NARRATIVES = {
   },
   S: {
     overview: `You are the stabilizing force in any environment. Your reliability, patience, and genuine care for others make you invaluable in any team. You build trust naturally, create psychological safety for those around you, and bring a calm consistency that others depend on. Your loyalty runs deep, and you are most motivated when you can contribute meaningfully to a team's long-term success.`,
-    communication: `Your communication style is warm, sincere, and attentive. You listen deeply, ask thoughtful questions, and make others feel genuinely understood. You prefer to build rapport before getting to business, and you tend to avoid confrontation—sometimes to your own detriment. You communicate with care and consistency, and your word means something to the people who know you.`,
+    communication: `Your communication style is warm, sincere, and attentive. You listen deeply, ask thoughtful questions, and make others feel genuinely understood. You prefer to build rapport before getting to business, and you tend to avoid confrontation‚Äîsometimes to your own detriment. You communicate with care and consistency, and your word means something to the people who know you.`,
     successItems: [
       'Team support, coordination, and people operations roles',
       'Customer service, account management, and relationship-building',
@@ -2144,8 +2138,8 @@ const NARRATIVES = {
     ]
   },
   C: {
-    overview: `You bring precision, rigor, and thoughtful analysis to everything you tackle. You have a gift for seeing what others miss—the details, the potential errors, the quality gaps. Your high standards elevate every project you touch. You are most motivated when you can work in a well-defined structure with clear expectations, access to accurate data, and the time to do things right.`,
-    communication: `Your communication style is formal, fact-based, and precise. You prefer written communication with supporting data, clear structure, and sufficient time to review before responding. You ask probing questions, prefer depth over breadth, and may appear reserved in group settings—but your contributions are always substantive and well-considered.`,
+    overview: `You bring precision, rigor, and thoughtful analysis to everything you tackle. You have a gift for seeing what others miss‚Äîthe details, the potential errors, the quality gaps. Your high standards elevate every project you touch. You are most motivated when you can work in a well-defined structure with clear expectations, access to accurate data, and the time to do things right.`,
+    communication: `Your communication style is formal, fact-based, and precise. You prefer written communication with supporting data, clear structure, and sufficient time to review before responding. You ask probing questions, prefer depth over breadth, and may appear reserved in group settings‚Äîbut your contributions are always substantive and well-considered.`,
     successItems: [
       'Research, analysis, and data science roles',
       'Quality assurance, compliance, and risk management',
@@ -2177,11 +2171,11 @@ function buildNarratives(scores) {
   let combinedNarrative = '';
   if (s && NARRATIVES[s]) {
     const SN = NARRATIVES[s];
-    combinedNarrative = `<p>${firstName}'s secondary style—<strong>${discName(s)} (${s})</strong>—adds an important dimension to this profile. ${
+    combinedNarrative = `<p>${firstName}'s secondary style‚Äî<strong>${discName(s)} (${s})</strong>‚Äîadds an important dimension to this profile. ${
       s === 'I' ? firstName + '\'s drive and ambition are balanced by genuine enthusiasm for people and the ability to motivate others through personal energy.' :
       s === 'D' ? 'This adds a results-oriented edge to ' + firstName + '\'s profile, helping move from planning to execution with confidence and decisiveness.' :
-      s === 'S' ? 'This brings a steady, loyal quality to ' + firstName + '\'s profile—pursuing goals with determination while also building the relationships and trust that sustain long-term success.' :
-      s === 'C' ? 'This gives ' + firstName + '\'s profile an analytical edge—not only driven, but compelled to be right, pursuing goals with precision and not cutting corners.' :
+      s === 'S' ? 'This brings a steady, loyal quality to ' + firstName + '\'s profile‚Äîpursuing goals with determination while also building the relationships and trust that sustain long-term success.' :
+      s === 'C' ? 'This gives ' + firstName + '\'s profile an analytical edge‚Äînot only driven, but compelled to be right, pursuing goals with precision and not cutting corners.' :
       ''
     } Together, the ${p}${s} profile suggests someone who is ${profileLabel.subtitle.toLowerCase()}.</p>`;
   }
@@ -2195,7 +2189,7 @@ function buildNarratives(scores) {
         <div class="narrative-icon" style="background:${discColorBg(p)};font-size:22px;">${discIcon(p)}</div>
         <div>
           <div class="narrative-title">${firstName}'s Profile: ${profileLabel.name}</div>
-          <div class="narrative-subtitle">Primary Style: ${discName(p)} (${p})${s ? ' · Secondary Style: ' + discName(s) + ' (' + s + ')' : ''}</div>
+          <div class="narrative-subtitle">Primary Style: ${discName(p)} (${p})${s ? ' ¬∑ Secondary Style: ' + discName(s) + ' (' + s + ')' : ''}</div>
         </div>
       </div>
       <div class="narrative-body">
@@ -2207,10 +2201,10 @@ function buildNarratives(scores) {
     <!-- SECTION 1: Personal Behavioral Characteristics -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:${discColorBg(p)};font-size:22px;">🪞</div>
+        <div class="narrative-icon" style="background:${discColorBg(p)};font-size:22px;">ü™û</div>
         <div>
           <div class="narrative-title">Personal Behavioral Characteristics</div>
-          <div class="narrative-subtitle">The unique value ${firstName} brings — and the tensions to navigate</div>
+          <div class="narrative-subtitle">The unique value ${firstName} brings ‚Äî and the tensions to navigate</div>
         </div>
       </div>
       <div class="narrative-body">
@@ -2221,9 +2215,9 @@ function buildNarratives(scores) {
     <!-- SECTION 2: DISC Communication Do's and Don'ts -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#eef4fc;font-size:22px;">📋</div>
+        <div class="narrative-icon" style="background:#eef4fc;font-size:22px;">üìã</div>
         <div>
-          <div class="narrative-title">DISC Communication Guide — Do's &amp; Don'ts</div>
+          <div class="narrative-title">DISC Communication Guide ‚Äî Do's &amp; Don'ts</div>
           <div class="narrative-subtitle">How to communicate effectively with ${firstName}, and how ${firstName} communicates with others</div>
         </div>
       </div>
@@ -2235,7 +2229,7 @@ function buildNarratives(scores) {
     <!-- SECTION 3: Perceptions Under Pressure -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#fff8f0;font-size:22px;">🔦</div>
+        <div class="narrative-icon" style="background:#fff8f0;font-size:22px;">üî¶</div>
         <div>
           <div class="narrative-title">Perceptions: How Others See ${firstName}</div>
           <div class="narrative-subtitle">Self-perception, moderate pressure, and major stress responses</div>
@@ -2249,19 +2243,19 @@ function buildNarratives(scores) {
     <!-- Existing: Success & Challenge -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#f0faf5;font-size:22px;">🎯</div>
+        <div class="narrative-icon" style="background:#f0faf5;font-size:22px;">üéØ</div>
         <div>
-          <div class="narrative-title">Where ${firstName} Thrives — and Where It Gets Hard</div>
+          <div class="narrative-title">Where ${firstName} Thrives ‚Äî and Where It Gets Hard</div>
           <div class="narrative-subtitle">Environments and scenarios aligned (or misaligned) with ${firstName}'s natural style</div>
         </div>
       </div>
       <div class="two-col" style="margin-top:8px;">
         <div class="insight-block">
-          <div class="insight-block-title success">✓ Best Scenarios for Success</div>
+          <div class="insight-block-title success">‚úì Best Scenarios for Success</div>
           <ul class="insight-list">${successHtml}</ul>
         </div>
         <div class="insight-block">
-          <div class="insight-block-title challenge">→ Challenging Scenarios</div>
+          <div class="insight-block-title challenge">‚Üí Challenging Scenarios</div>
           <ul class="insight-list challenge-list">${challengeHtml}</ul>
         </div>
       </div>
@@ -2270,7 +2264,7 @@ function buildNarratives(scores) {
     <!-- SECTION 4: Natural vs. Adapted Style (expanded) -->
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#f0faf5;font-size:22px;">🧠</div>
+        <div class="narrative-icon" style="background:#f0faf5;font-size:22px;">üß†</div>
         <div>
           <div class="narrative-title">Natural Style vs. Adapted Style</div>
           <div class="narrative-subtitle">Understanding the two sides of ${firstName}'s behavioral profile</div>
@@ -2283,7 +2277,7 @@ function buildNarratives(scores) {
 
     <div class="narrative-section">
       <div class="narrative-header">
-        <div class="narrative-icon" style="background:#fef8ee;font-size:22px;">🚀</div>
+        <div class="narrative-icon" style="background:#fef8ee;font-size:22px;">üöÄ</div>
         <div>
           <div class="narrative-title">Coaching Insights &amp; Development Focus</div>
           <div class="narrative-subtitle">Opportunities to maximize ${firstName}'s impact and effectiveness</div>
@@ -2305,23 +2299,23 @@ function buildPersonalBehavioralCharacteristics(scores, firstName) {
 
   const traits = {
     D: {
-      value: `${firstName} brings an uncommon clarity of purpose to every interaction. Where others see ambiguity, ${firstName} sees a decision to be made and a path forward to pursue. This directness is not simply a personality trait — it is a genuine contribution. ${firstName}'s willingness to take the lead, cut through noise, and champion results-oriented action is a force multiplier for any team or organization. People around ${firstName} rarely wonder where things stand, what the goal is, or whether someone is going to take ownership. ${firstName} provides that anchor.`,
-      communication: `${firstName} communicates with economy and conviction. Conversations are typically direct, purposeful, and efficient — ${firstName} values time and tends to move toward the bottom line quickly. In group settings, ${firstName} often steps into leadership roles naturally, even when not formally appointed. ${firstName}'s opinions are usually clearly stated, and ${firstName} expects the same candor in return. This creates an atmosphere of clarity and accountability wherever ${firstName} works.`,
-      challenges: `The same drive that makes ${firstName} effective can create friction in certain contexts. ${firstName} may move to conclusions faster than some team members are comfortable with, leaving others feeling unheard or steamrolled — not because ${firstName} is dismissive, but because the pace feels too quick. ${firstName} may also struggle in environments that require extensive collaboration, consensus-building, or deference to others' timelines. When under pressure, ${firstName}'s directness can shade into bluntness, and decisiveness can appear as inflexibility. The awareness of these tendencies is the first step in managing them strategically.`
+      value: `${firstName} brings an uncommon clarity of purpose to every interaction. Where others see ambiguity, ${firstName} sees a decision to be made and a path forward to pursue. This directness is not simply a personality trait ‚Äî it is a genuine contribution. ${firstName}'s willingness to take the lead, cut through noise, and champion results-oriented action is a force multiplier for any team or organization. People around ${firstName} rarely wonder where things stand, what the goal is, or whether someone is going to take ownership. ${firstName} provides that anchor.`,
+      communication: `${firstName} communicates with economy and conviction. Conversations are typically direct, purposeful, and efficient ‚Äî ${firstName} values time and tends to move toward the bottom line quickly. In group settings, ${firstName} often steps into leadership roles naturally, even when not formally appointed. ${firstName}'s opinions are usually clearly stated, and ${firstName} expects the same candor in return. This creates an atmosphere of clarity and accountability wherever ${firstName} works.`,
+      challenges: `The same drive that makes ${firstName} effective can create friction in certain contexts. ${firstName} may move to conclusions faster than some team members are comfortable with, leaving others feeling unheard or steamrolled ‚Äî not because ${firstName} is dismissive, but because the pace feels too quick. ${firstName} may also struggle in environments that require extensive collaboration, consensus-building, or deference to others' timelines. When under pressure, ${firstName}'s directness can shade into bluntness, and decisiveness can appear as inflexibility. The awareness of these tendencies is the first step in managing them strategically.`
     },
     I: {
-      value: `${firstName} is a natural energizer. Walk into a room where ${firstName} is present, and the atmosphere shifts — conversations become more animated, possibilities feel more achievable, and people feel more seen. This is not simply charisma; it is a genuine skill in human connection. ${firstName}'s ability to inspire, persuade, and rally others around a shared vision is a rare and valuable gift. In teams and organizations, ${firstName} often becomes the cultural heartbeat — the person others look to for enthusiasm, optimism, and the confidence that things will work out.`,
-      communication: `${firstName} communicates through stories, emotion, and enthusiasm. Conversations with ${firstName} tend to be warm, animated, and wide-ranging — ${firstName} thinks out loud and connects ideas across domains in ways others find both energizing and surprising. ${firstName} makes people feel valued and heard quickly, which builds trust and rapport at an unusually fast pace. Written communication is typically engaging and personable. ${firstName} is at best in face-to-face or live interactions where energy can be shared and connection can be felt.`,
-      challenges: `${firstName}'s greatest strengths can also become limiting factors in certain contexts. The enthusiasm that energizes a team can sometimes translate into overpromising or difficulty prioritizing — there are so many exciting directions that choosing one can feel like a loss. Follow-through on detailed commitments may require deliberate effort, as ${firstName} tends to be drawn toward the new and energizing rather than the routine and administrative. In high-stress moments, ${firstName} may default to optimism in ways that underestimate real challenges, or may seek social validation rather than space for independent analysis.`
+      value: `${firstName} is a natural energizer. Walk into a room where ${firstName} is present, and the atmosphere shifts ‚Äî conversations become more animated, possibilities feel more achievable, and people feel more seen. This is not simply charisma; it is a genuine skill in human connection. ${firstName}'s ability to inspire, persuade, and rally others around a shared vision is a rare and valuable gift. In teams and organizations, ${firstName} often becomes the cultural heartbeat ‚Äî the person others look to for enthusiasm, optimism, and the confidence that things will work out.`,
+      communication: `${firstName} communicates through stories, emotion, and enthusiasm. Conversations with ${firstName} tend to be warm, animated, and wide-ranging ‚Äî ${firstName} thinks out loud and connects ideas across domains in ways others find both energizing and surprising. ${firstName} makes people feel valued and heard quickly, which builds trust and rapport at an unusually fast pace. Written communication is typically engaging and personable. ${firstName} is at best in face-to-face or live interactions where energy can be shared and connection can be felt.`,
+      challenges: `${firstName}'s greatest strengths can also become limiting factors in certain contexts. The enthusiasm that energizes a team can sometimes translate into overpromising or difficulty prioritizing ‚Äî there are so many exciting directions that choosing one can feel like a loss. Follow-through on detailed commitments may require deliberate effort, as ${firstName} tends to be drawn toward the new and energizing rather than the routine and administrative. In high-stress moments, ${firstName} may default to optimism in ways that underestimate real challenges, or may seek social validation rather than space for independent analysis.`
     },
     S: {
-      value: `${firstName} brings something that is genuinely rare and deeply valuable in any team environment: consistency. Not just behavioral consistency — though ${firstName} has that in abundance — but the consistency of character that creates psychological safety for those around them. People trust ${firstName} because ${firstName} is reliable. What ${firstName} says, ${firstName} does. Where ${firstName} commits, ${firstName} delivers. This trust is not easily earned, and it creates loyalty in return. ${firstName} is the kind of teammate, colleague, and partner that people seek out not just for task support, but for genuine human steadiness.`,
-      communication: `${firstName} communicates with warmth, care, and intentionality. ${firstName} listens before speaking, asks questions before offering answers, and takes the time to understand where others are coming from before expressing a perspective. This creates an atmosphere of genuine inclusion — people feel heard in ${firstName}'s presence. ${firstName} tends to avoid confrontation naturally, and may soften difficult messages to preserve the relationship. This impulse is generous, though it sometimes means important feedback arrives too gently to land.`,
+      value: `${firstName} brings something that is genuinely rare and deeply valuable in any team environment: consistency. Not just behavioral consistency ‚Äî though ${firstName} has that in abundance ‚Äî but the consistency of character that creates psychological safety for those around them. People trust ${firstName} because ${firstName} is reliable. What ${firstName} says, ${firstName} does. Where ${firstName} commits, ${firstName} delivers. This trust is not easily earned, and it creates loyalty in return. ${firstName} is the kind of teammate, colleague, and partner that people seek out not just for task support, but for genuine human steadiness.`,
+      communication: `${firstName} communicates with warmth, care, and intentionality. ${firstName} listens before speaking, asks questions before offering answers, and takes the time to understand where others are coming from before expressing a perspective. This creates an atmosphere of genuine inclusion ‚Äî people feel heard in ${firstName}'s presence. ${firstName} tends to avoid confrontation naturally, and may soften difficult messages to preserve the relationship. This impulse is generous, though it sometimes means important feedback arrives too gently to land.`,
       challenges: `${firstName}'s deep preference for harmony and consistency can become a limitation in environments that require speed, disruption, or direct confrontation. ${firstName} may find rapid change unsettling and may resist pivoting from established processes, even when the environment clearly calls for it. In conflict-heavy environments, ${firstName}'s tendency to accommodate can leave needs unspoken and resentments quietly building. ${firstName} may also hesitate to assert opinions or push back on authority, which can mean the most thoughtful voice in the room goes unheard. Learning to channel the natural empathy into courageous honesty is often a defining developmental theme for ${firstName}.`
     },
     C: {
-      value: `${firstName} brings a quality that modern organizations desperately need but rarely cultivate: rigorous intellectual honesty. ${firstName} does not guess. ${firstName} does not assume. ${firstName} investigates, analyzes, cross-references, and validates — and as a result, ${firstName}'s conclusions can be trusted. This commitment to accuracy and quality is not just a work style; it is a value system. ${firstName} elevates the quality of every project, decision, and conversation by holding the standard high and refusing to let important details fall through the cracks. In a world of surface-level thinking, ${firstName}'s depth is a genuine competitive advantage.`,
-      communication: `${firstName} communicates with precision and substance. ${firstName} prefers to think before speaking, and tends toward written or structured communication over informal conversation. When ${firstName} shares an opinion or recommendation, it is well-considered and grounded in evidence. ${firstName} asks probing questions — not to challenge, but to understand — and can sometimes be perceived as critical by those who haven't yet learned to appreciate the rigor behind the inquiry. ${firstName} is at best in environments where substance is valued over style, and where having the right answer matters more than being the loudest voice.`,
+      value: `${firstName} brings a quality that modern organizations desperately need but rarely cultivate: rigorous intellectual honesty. ${firstName} does not guess. ${firstName} does not assume. ${firstName} investigates, analyzes, cross-references, and validates ‚Äî and as a result, ${firstName}'s conclusions can be trusted. This commitment to accuracy and quality is not just a work style; it is a value system. ${firstName} elevates the quality of every project, decision, and conversation by holding the standard high and refusing to let important details fall through the cracks. In a world of surface-level thinking, ${firstName}'s depth is a genuine competitive advantage.`,
+      communication: `${firstName} communicates with precision and substance. ${firstName} prefers to think before speaking, and tends toward written or structured communication over informal conversation. When ${firstName} shares an opinion or recommendation, it is well-considered and grounded in evidence. ${firstName} asks probing questions ‚Äî not to challenge, but to understand ‚Äî and can sometimes be perceived as critical by those who haven't yet learned to appreciate the rigor behind the inquiry. ${firstName} is at best in environments where substance is valued over style, and where having the right answer matters more than being the loudest voice.`,
       challenges: `${firstName}'s commitment to quality can become a liability when the environment demands speed, adaptability, or ambiguity tolerance. The pursuit of a perfect answer can slow decision-making in fast-moving situations where a good answer today is more valuable than the best answer next month. ${firstName} may also find highly social or informal environments draining, and may be perceived as distant or overly critical when the goal is simply connection. In collaborative settings, ${firstName}'s high standards can feel like a moving target to teammates who don't share the same threshold for precision. Knowing when to let good enough be good enough is a recurring development theme.`
     }
   };
@@ -2355,11 +2349,1474 @@ function buildDosAndDonts(scores, firstName) {
     D: {
       desc: `${firstName} is ambitious, direct, decisive, results-oriented, and independent. When communicating with ${firstName}:`,
       dos: [
-        `Be clear, specific, brief, and to the point — ${firstName} values your time and their own`,
+        `Be clear, specific, brief, and to the point ‚Äî ${firstName} values your time and their own`,
         `Lead with the bottom line; provide supporting detail only if asked`,
         `Come prepared with a well-organized summary and relevant facts`,
         `Give ${firstName} options and let them make the call`,
         `Focus on results, outcomes, and measurable impact`,
         `Respect ${firstName}'s authority and acknowledge their accomplishments`,
-        `Be direct about disagreements — ${firstName} respects confident, factual pushback`
+        `Be direct about disagreements ‚Äî ${firstName} respects confident, factual pushback`
+      ],
+      donts: [
+        `Rambling, unfocused communication or lengthy preambles`,
+        `Being vague about expectations, timelines, or accountabilities`,
+        `Micromanaging or checking in excessively on how things are going`,
+        `Appealing primarily to feelings or relationships rather than outcomes`,
+        `Leaving cloudy issues or loopholes unaddressed`,
+        `Being disorganized or appearing unprepared`,
+        `Appearing overly passive or indecisive`
+      ]
+    },
+    I: {
+      desc: `${firstName} is enthusiastic, collaborative, people-focused, optimistic, and expressive. When communicating with ${firstName}:`,
+      dos: [
+        `Be warm, upbeat, and personable ‚Äî match ${firstName}'s energy and enthusiasm`,
+        `Allow time for conversation and social connection before diving into tasks`,
+        `Acknowledge ${firstName}'s contributions publicly and with genuine appreciation`,
+        `Appeal to how ideas will help or inspire the people involved`,
+        `Use stories, examples, and visuals ‚Äî paint a picture rather than a spreadsheet`,
+        `Give ${firstName} creative freedom and opportunities to collaborate`,
+        `Keep follow-up items visible and structured without being rigid`
+      ],
+      donts: [
+        `Cold, clinical, or purely transactional communication`,
+        `Excessive detail, data-heavy presentations without human context`,
+        `Isolating ${firstName} from people or interaction for extended periods`,
+        `Piling on routine administrative tasks without acknowledgment`,
+        `Being dismissive of enthusiasm or optimism as "unrealistic"`,
+        `Rigidly controlling how ${firstName} expresses ideas`,
+        `Failing to recognize effort and contribution publicly`
+      ]
+    },
+    S: {
+      desc: `${firstName} is patient, loyal, dependable, team-oriented, and sincere. When communicating with ${firstName}:`,
+      dos: [
+        `Build rapport and take time to connect personally before getting to business`,
+        `Provide clear context, rationale, and assurances when introducing change`,
+        `Demonstrate genuine appreciation for ${firstName}'s reliability and contribution`,
+        `Ask for ${firstName}'s opinion ‚Äî and wait for the answer, because it is worth hearing`,
+        `Be patient and allow ${firstName} adequate time to process and respond`,
+        `Follow through on commitments ‚Äî ${firstName} notices, and it matters deeply`,
+        `Create a safe space for ${firstName} to share concerns without judgment`
+      ],
+      donts: [
+        `Rushing to conclusions without giving ${firstName} time to think`,
+        `Springing sudden changes without preparation or explanation`,
+        `Being blunt, abrasive, or impatient in tone`,
+        `Ignoring ${firstName}'s consistent, quiet contributions`,
+        `Pressuring ${firstName} to make quick decisions in high-stakes situations`,
+        `Creating conflict or tension in the shared environment unnecessarily`,
+        `Taking ${firstName}'s loyalty or reliability for granted`
+      ]
+    },
+    C: {
+      desc: `${firstName} is precise, analytical, systematic, quality-focused, and thorough. When communicating with ${firstName}:`,
+      dos: [
+        `Prepare your case in advance ‚Äî come with data, evidence, and a logical structure`,
+        `Be accurate and realistic; don't overstate or oversimplify`,
+        `Give ${firstName} time to review materials before expecting a decision`,
+        `Respect the depth of ${firstName}'s analysis and ask probing follow-up questions`,
+        `Acknowledge the quality and precision ${firstName} brings to shared work`,
+        `Provide written summaries or documentation wherever possible`,
+        `Be patient with the process ‚Äî ${firstName}'s thoroughness protects everyone`
+      ],
+      donts: [
+        `Being glib, casual, or dismissive of detail`,
+        `Pushing for quick decisions without adequate information`,
+        `Being disorganized or unclear about expectations and standards`,
+        `Using emotional appeals as a substitute for evidence`,
+        `Surprising ${firstName} with undisclosed changes or hidden agendas`,
+        `Dismissing concerns about quality or accuracy as perfectionism`,
+        `Being loud, informal, or overly casual in serious professional contexts`
+      ]
+    }
+  };
+
+  // Part B: How THIS person communicates with each other style
+  const crossStyle = {
+    D: {
+      withI: `When ${firstName} communicates with high-<strong>I</strong> (Influence) individuals, they should slow down enough to acknowledge the person before the agenda. High-I colleagues are energized by connection ‚Äî a moment of genuine warmth from ${firstName} before getting to business will dramatically increase receptivity. ${firstName} should also be open to exploring ideas that haven't been fully thought through yet, and resist the impulse to cut enthusiasm short.`,
+      withS: `When ${firstName} communicates with high-<strong>S</strong> (Steadiness) individuals, directness needs to be accompanied by patience. High-S colleagues need time to process, and they care deeply about relationships and stability. ${firstName} should lead with context and rationale when introducing change, avoid abruptness, and actively solicit input rather than presenting decisions as already made.`,
+      withC: `When ${firstName} communicates with high-<strong>C</strong> (Conscientiousness) individuals, ${firstName} should come prepared with supporting evidence and expect probing questions. High-C colleagues need data to trust a direction ‚Äî assertiveness alone won't move them. ${firstName} should resist the urge to push for closure before the C-style is satisfied that the information is sufficient.`
+    },
+    I: {
+      withD: `When ${firstName} communicates with high-<strong>D</strong> (Dominance) individuals, cutting quickly to the outcome and the "so what" will go a long way. High-D colleagues don't need the story first ‚Äî they want the headline. ${firstName} should resist the impulse to share too much context upfront, lead with the ask or the result, and be direct about what is needed.`,
+      withS: `When ${firstName} communicates with high-<strong>S</strong> (Steadiness) individuals, ${firstName} will find a natural warmth and openness. High-S colleagues appreciate ${firstName}'s relational energy ‚Äî and ${firstName} should lean into this. However, ${firstName} should also honor the S-style's need for consistency, and avoid introducing too many ideas at once without a clear follow-through plan.`,
+      withC: `When ${firstName} communicates with high-<strong>C</strong> (Conscientiousness) individuals, ${firstName} should arrive with facts and specifics to support the enthusiasm. High-C colleagues will not be moved by energy alone ‚Äî they want evidence. ${firstName} should welcome detailed questions rather than deflecting them, and demonstrate follow-through on commitments, which matters enormously to C-style individuals.`
+    },
+    S: {
+      withD: `When ${firstName} communicates with high-<strong>D</strong> (Dominance) individuals, assertiveness and brevity will serve ${firstName} well. High-D colleagues respect directness. ${firstName} should state the point early, avoid softening messages too much, and not interpret D-style bluntness as personal. ${firstName} should also advocate for own needs clearly ‚Äî the D-style responds well to those who hold their ground with facts.`,
+      withI: `When ${firstName} communicates with high-<strong>I</strong> (Influence) individuals, the relational warmth will flow naturally. ${firstName} should enjoy this connection, while also gently providing structure and follow-up to conversations that might otherwise stay in the exciting-idea phase. ${firstName}'s grounded steadiness complements the I-style's enthusiasm in powerful ways.`,
+      withC: `When ${firstName} communicates with high-<strong>C</strong> (Conscientiousness) individuals, patience and precision are the keys. ${firstName} should come prepared, provide accurate information, and allow space for thorough questions. The C-style's careful approach is actually quite aligned with ${firstName}'s own methodical nature ‚Äî this pairing tends to produce high-quality, well-considered work.`
+    },
+    C: {
+      withD: `When ${firstName} communicates with high-<strong>D</strong> (Dominance) individuals, ${firstName} should lead with the conclusion, not the methodology. High-D colleagues want the "what" and the "so what" before the "how." ${firstName} should prepare a tight summary of the key finding and recommendation, and resist leading with caveats or conditions ‚Äî lead with the answer, then offer the depth if asked.`,
+      withI: `When ${firstName} communicates with high-<strong>I</strong> (Influence) individuals, ${firstName} should invest a moment in genuine human connection before moving to substance. The I-style experiences information differently when it comes from someone they feel connected to. ${firstName} should also simplify the presentation of detail ‚Äî not because the I-style can't understand complexity, but because they absorb it better through story and context than through raw data.`,
+      withS: `When ${firstName} communicates with high-<strong>S</strong> (Steadiness) individuals, ${firstName} will find a natural alignment on thoroughness and follow-through. Both styles value doing things right. ${firstName} should be deliberate about expressing appreciation for the S-style's consistency, and should share context and rationale when changes are necessary, giving the S-style adequate time to adjust.`
+    }
+  };
+
+  const pw = withPerson[p];
+  const cs = crossStyle[p];
+  const dosHtml = pw.dos.map(d => `<li style="padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-mid);"><span style="position:absolute;left:4px;color:#38a169;font-weight:700;">‚úì</span>${d}</li>`).join('');
+  const dontsHtml = pw.donts.map(d => `<li style="padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-mid);"><span style="position:absolute;left:4px;color:#c0392b;font-weight:700;">‚úó</span>${d}</li>`).join('');
+
+  const otherStyles = ['D','I','S','C'].filter(t => t !== p);
+  const crossKeys = { D: ['withI','withS','withC'], I: ['withD','withS','withC'], S: ['withD','withI','withC'], C: ['withD','withI','withS'] };
+  const crossHtml = crossKeys[p].map(k => `<div style="padding:14px 18px;background:var(--bg);border-radius:8px;border-left:3px solid ${discColor(k.replace('with',''))};margin-bottom:12px;font-size:14px;color:var(--text-mid);line-height:1.7;">${cs[k]}</div>`).join('');
+
+  return `
+    <p style="font-size:14px;color:var(--text-mid);margin-bottom:18px;">Most people are aware of and sensitive to the ways they prefer to be communicated with. Many find this section to be remarkably accurate and important for enhanced interpersonal communication. Review the most important items below and consider sharing the highlighted Do's with those who work with ${firstName} most frequently.</p>
+
+    <div style="background:${discColorBg(p)};border:1.5px solid ${discColor(p)};border-radius:10px;padding:18px 22px;margin-bottom:22px;">
+      <div style="font-size:13px;font-weight:700;color:${discColor(p)};margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">When communicating with ${firstName}:</div>
+      <div style="font-size:13px;color:var(--text-mid);margin-bottom:14px;">${pw.desc}</div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:24px;">
+      <div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#27855f;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #27855f;">‚úì Do These Things</div>
+        <ul style="list-style:none;padding:0;margin:0;">${dosHtml}</ul>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#c0392b;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #c0392b;">‚úó Avoid These Things</div>
+        <ul style="list-style:none;padding:0;margin:0;">${dontsHtml}</ul>
+      </div>
+    </div>
+
+    <div style="border-top:2px solid var(--border);padding-top:20px;margin-top:4px;">
+      <div style="font-size:13px;font-weight:700;color:var(--cp-navy);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em;">How ${firstName} Should Communicate Across DISC Styles</div>
+      <p style="font-size:14px;color:var(--text-mid);margin-bottom:14px;">As a <strong>${discName(p)}-style</strong> communicator, ${firstName} brings natural strengths that may need to be adjusted when working with individuals whose styles differ. Below are personalized guidance notes for each interaction:</p>
+      ${crossHtml}
+    </div>
+  `;
+}
+
+/* ===================================================
+   SECTION 3: PERCEPTIONS
+=================================================== */
+function buildPerceptions(scores, firstName) {
+  const p = scores.primary;
+
+  const perceptionData = {
+    D: {
+      selfView: `${firstName} typically sees themselves as confident, capable, and decisive ‚Äî a person who gets things done. ${firstName} views their directness as an asset, their drive as a strength, and their willingness to take charge as a natural expression of who they are. From ${firstName}'s perspective, being results-focused is not aggressive ‚Äî it's simply efficient. ${firstName} may underestimate how much their pace, tone, and intensity register for others who process the world differently.`,
+      moderatePressure: `When under moderate pressure ‚Äî a challenging deadline, a competing priority, or a setback in progress ‚Äî others may begin to perceive ${firstName} as <em>impatient, demanding, or dismissive</em>. The directness that reads as "refreshingly clear" in normal conditions can begin to feel blunt or critical. Team members may start to filter what they share with ${firstName}, concerned that anything less than progress will be met with frustration. In this state, ${firstName}'s natural strength ‚Äî decisive clarity ‚Äî risks becoming an invisible wall between them and honest information.`,
+      majorStress: `Under major pressure ‚Äî a significant failure, a conflict of authority, or a prolonged period of blocked progress ‚Äî others may perceive ${firstName} as <em>domineering, controlling, or combative</em>. The competitive drive intensifies, and behaviors that were previously directive may now feel aggressive. ${firstName} may double down on pace and pressure, create an atmosphere of urgency that burns others out, or become unwilling to hear perspectives that don't align with the chosen course. In this state, the very decisiveness that makes ${firstName} effective risks alienating the people needed most.`,
+      insight: `The most powerful development opportunity for ${firstName} is building awareness of how these perceptual shifts register on others ‚Äî and learning to deliberately slow down, invite input, and modulate intensity before the environment forces the issue.`
+    },
+    I: {
+      selfView: `${firstName} typically sees themselves as enthusiastic, personable, and genuinely supportive ‚Äî someone who brings positive energy and a genuine desire to help others succeed. ${firstName} views their expressiveness as connecting, their optimism as motivating, and their people-first orientation as a real contribution to team culture. ${firstName} may not fully recognize the degree to which their enthusiasm can sometimes outpace the substance that others are looking for.`,
+      moderatePressure: `When under moderate pressure ‚Äî a tight deadline, a difficult interpersonal situation, or a moment of criticism ‚Äî others may begin to perceive ${firstName} as <em>scattered, reactive, or over-promising</em>. The optimism that feels inspiring in good times can appear to be avoidance of reality in harder ones. Commitments that felt enthusiastically made can begin to feel unreliable, and the social energy that usually draws people in may feel like it's being used to smooth over problems rather than face them. Team members may start to wonder whether ${firstName}'s confidence reflects real assessment or wishful thinking.`,
+      majorStress: `Under major pressure ‚Äî sustained criticism, visible failure, or an environment that feels isolating ‚Äî others may perceive ${firstName} as <em>impulsive, defensive, or emotionally volatile</em>. The warmth that characterized ${firstName}'s communication may give way to emotional reactivity or attention-seeking behaviors. ${firstName} may resist structured accountability, project confidence that isn't backed by preparation, or require reassurance in ways that shift burden to teammates at exactly the wrong moment.`,
+      insight: `The growth opportunity for ${firstName} is in learning to project grounded confidence ‚Äî not just enthusiasm ‚Äî and to demonstrate that the energy and optimism are backed by follow-through and realistic assessment, especially when the pressure is highest.`
+    },
+    S: {
+      selfView: `${firstName} typically sees themselves as reliable, caring, and team-oriented ‚Äî a person others can genuinely depend on. ${firstName} views their patience as a strength, their loyalty as a contribution, and their ability to create harmony as something the team needs. ${firstName} may not fully appreciate the degree to which this self-presentation can sometimes cause important concerns to go unexpressed, or important contributions to go unnoticed.`,
+      moderatePressure: `When under moderate pressure ‚Äî change, conflict, or competing demands on loyalty ‚Äî others may begin to perceive ${firstName} as <em>passive, indecisive, or conflict-avoidant</em>. The accommodation that reads as generous in calm environments can feel like fence-sitting or lack of conviction when clarity is needed. ${firstName}'s tendency to preserve the peace may be read as agreement by those who need disagreement, or as weakness by those who expected advocacy. Important concerns may be expressed so gently that they fail to register.`,
+      majorStress: `Under major pressure ‚Äî being forced into conflict, facing significant change, or experiencing a breakdown of trust ‚Äî others may perceive ${firstName} as <em>withdrawn, resentful, or stubborn in unexpected ways</em>. The patience that is usually ${firstName}'s signature can give way to quiet resistance, passive pushback, or a slow emotional retreat that is difficult for others to see coming. The genuine care that normally opens doors may close down as a form of self-protection, leaving teammates uncertain how to re-engage.`,
+      insight: `The most impactful development area for ${firstName} is learning to surface concerns, disagreements, and needs with directness and confidence ‚Äî trusting that honest communication, even when uncomfortable, ultimately strengthens the relationships that matter most.`
+    },
+    C: {
+      selfView: `${firstName} typically sees themselves as thorough, principled, and analytically sound ‚Äî a person who brings rigor and quality to everything they touch. ${firstName} views their attention to detail as protective, their high standards as responsible, and their careful approach as simply the right way to do things. ${firstName} may underestimate how this orientation registers for those who operate at a different pace or with a different tolerance for ambiguity.`,
+      moderatePressure: `When under moderate pressure ‚Äî unclear expectations, inadequate information, or time constraints that conflict with quality ‚Äî others may begin to perceive ${firstName} as <em>overly critical, slow to act, or perfectionistic</em>. The thoroughness that is an asset in careful, methodical work can become a friction point when the environment needs momentum. Questions that feel like diligence to ${firstName} may feel like obstruction or doubt to a team that is ready to move. The commitment to getting it right can appear to outweigh the commitment to getting it done.`,
+      majorStress: `Under major pressure ‚Äî being forced to make decisions without sufficient information, operating in a chaotic or unpredictable environment, or facing public criticism ‚Äî others may perceive ${firstName} as <em>withdrawn, hypercritical, or inflexible</em>. The high standards that normally elevate quality can become a lens through which everything is found wanting. ${firstName} may disengage from collaboration, escalate quality concerns beyond their proportional importance, or become so focused on what is wrong that the path forward becomes obscured.`,
+      insight: `The most powerful development area for ${firstName} is building the capacity to operate effectively in ambiguity ‚Äî making confident, informed decisions with the data available, and trusting that the standard for "good enough" in fast-moving situations is not a compromise of values, but a sophisticated form of judgment.`
+    }
+  };
+
+  const d = perceptionData[p];
+  return `
+    <p style="font-size:14px;color:var(--text-mid);margin-bottom:20px;">A person's behavior and feelings may be quickly telegraphed to others ‚Äî sometimes in ways they don't intend. Understanding how ${firstName} is perceived across different conditions empowers ${firstName} to project the image that best serves the situation and maintain control of the impression they make.</p>
+
+    <div style="margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:${discColorBg(p)};border-radius:8px 8px 0 0;border:1.5px solid ${discColor(p)};border-bottom:none;">
+        <span style="font-size:18px;">üôÇ</span>
+        <div style="font-size:13px;font-weight:700;color:${discColor(p)};text-transform:uppercase;letter-spacing:.06em;">${firstName}'s Self-Perception</div>
+      </div>
+      <div style="padding:16px 20px;background:var(--white);border:1.5px solid ${discColor(p)};border-top:none;border-radius:0 0 8px 8px;font-size:14px;color:var(--text-mid);line-height:1.75;">${d.selfView}</div>
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff8e8;border-radius:8px 8px 0 0;border:1.5px solid #d4860a;border-bottom:none;">
+        <span style="font-size:18px;">‚ö†Ô∏è</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#d4860a;text-transform:uppercase;letter-spacing:.06em;">Under Moderate Pressure</div>
+          <div style="font-size:11px;color:#a0856a;">How others may begin to perceive ${firstName}</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px;background:var(--white);border:1.5px solid #d4860a;border-top:none;border-radius:0 0 8px 8px;font-size:14px;color:var(--text-mid);line-height:1.75;">${d.moderatePressure}</div>
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fdf0ef;border-radius:8px 8px 0 0;border:1.5px solid #c0392b;border-bottom:none;">
+        <span style="font-size:18px;">üî¥</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#c0392b;text-transform:uppercase;letter-spacing:.06em;">Under Major Pressure or Stress</div>
+          <div style="font-size:11px;color:#a0856a;">How others may perceive ${firstName} in more negative ways</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px;background:var(--white);border:1.5px solid #c0392b;border-top:none;border-radius:0 0 8px 8px;font-size:14px;color:var(--text-mid);line-height:1.75;">${d.majorStress}</div>
+    </div>
+
+    <div style="padding:16px 20px;background:#e8f0fb;border-radius:8px;border-left:4px solid #2060a0;font-size:14px;color:var(--text-mid);line-height:1.75;">
+      <strong style="color:#2060a0;">Key Insight for ${firstName}:</strong> ${d.insight}
+    </div>
+  `;
+}
+
+/* ===================================================
+   SECTION 4: NATURAL VS. ADAPTED (expanded)
+=================================================== */
+function buildNaturalVsAdapted(scores, firstName) {
+  const p = scores.primary;
+  const s = scores.secondary;
+
+  const gapNarrative = buildAdaptedGapNarrative(scores).replace(/\bYour\b/g, firstName + '\'s').replace(/\byour\b/g, firstName + '\'s').replace(/\byou\b/g, firstName).replace(/\bYou\b/g, firstName);
+
+  const styleSpecific = {
+    D: `For a ${discName('D')}-style individual like ${firstName}, the Natural Style represents the authentic, driven self ‚Äî the person who instinctively takes charge, moves fast, and pushes toward results. The Adapted Style reveals how ${firstName} calibrates that drive to meet the demands of a specific environment or role. A high-D individual who has adapted significantly toward more measured behavior in their current context is expending real energy to do so ‚Äî and may find it sustainable in the short term but quietly exhausting over time. Conversely, a role that genuinely requires and rewards directness allows ${firstName} to operate at full capacity with far less internal friction.`,
+    I: `For a ${discName('I')}-style individual like ${firstName}, the Natural Style captures the authentic social energy, optimism, and expressive warmth that characterize ${firstName} at their most genuine. The Adapted Style shows how ${firstName} adjusts that expressiveness to fit a current environment ‚Äî which may require more structure, data-orientation, or formality than comes naturally. When the adaptation is significant, ${firstName} may find themselves performing a version of themselves that feels less authentic, especially in highly analytical or process-heavy environments.`,
+    S: `For a ${discName('S')}-style individual like ${firstName}, the Natural Style represents the deep, genuine steadiness, patience, and care that others rely on. The Adapted Style reveals how ${firstName} adjusts those qualities to meet the pace and demands of a specific environment ‚Äî sometimes showing more urgency, assertiveness, or flexibility than comes naturally. When the adaptation is significant, it may be a signal that ${firstName}'s current environment is asking them to operate consistently outside their comfort zone, which has real cumulative effects on energy and satisfaction over time.`,
+    C: `For a ${discName('C')}-style individual like ${firstName}, the Natural Style reflects the deep analytical rigor, attention to quality, and systematic thinking that ${firstName} brings at their most authentic. The Adapted Style shows how ${firstName} modifies that precision to fit the pace and style of the current environment ‚Äî sometimes moving faster, communicating more broadly, or accepting more ambiguity than feels comfortable. When the gap is significant, it often reflects a deliberate professional discipline ‚Äî but it is worth asking whether the adaptation is energizing or depleting.`
+  };
+
+  const impactOnOthers = {
+    D: `When ${firstName}'s Adapted Score is notably different from their Natural Score, the people who interact with ${firstName} most frequently may experience inconsistency in ${firstName}'s behavior. In contexts where ${firstName} is operating naturally, interactions tend to be swift, direct, and decisive. In contexts requiring significant adaptation, ${firstName} may be more measured, collaborative, or deliberate ‚Äî but this may feel less "like ${firstName}" to those accustomed to the natural style. Understanding this dynamic helps those around ${firstName} interpret behavior accurately rather than reading it as inconsistency or unpredictability.`,
+    I: `When ${firstName}'s Adapted Score differs from their Natural Score, colleagues may notice that ${firstName} seems "different" depending on the context ‚Äî sometimes animated and expressive, other times more contained and structured. This is not inconsistency; it is ${firstName} reading the room and adjusting accordingly. Understanding the underlying Natural Style helps colleagues appreciate that the warmth and enthusiasm are always there ‚Äî even when the situation calls for a more measured presentation.`,
+    S: `When ${firstName}'s Adapted Score differs from their Natural Score, colleagues may notice that ${firstName} operates at different paces or levels of assertiveness depending on the situation. In environments that allow the Natural Style to surface, ${firstName} is at their most warm, patient, and consistent. In high-pressure or high-change environments that require significant adaptation, ${firstName} may be more assertive or faster-moving ‚Äî but may also show signs of stress that those close to ${firstName} should be attentive to.`,
+    C: `When ${firstName}'s Adapted Score differs from their Natural Score, colleagues may notice that ${firstName} functions differently in structured versus ambiguous environments. In situations that align with the Natural Style ‚Äî clear expectations, sufficient data, time to be thorough ‚Äî ${firstName} is at their best. In situations requiring significant behavioral adaptation ‚Äî speed, improvisation, or public visibility ‚Äî ${firstName} may perform well, but should be given space to decompress and process afterward.`
+  };
+
+  return `
+    <div class="two-col" style="margin-bottom:20px;">
+      <div style="padding:18px 20px;background:var(--cp-light);border-radius:10px;border:1.5px solid var(--border);">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--cp-navy);margin-bottom:8px;">üåø Natural Style</div>
+        <p style="font-size:14px;color:var(--text-mid);line-height:1.7;margin:0;">${firstName}'s <strong>Natural Style</strong> reflects how ${firstName} behaves when relaxed, authentic, and free from environmental pressure ‚Äî the "real ${firstName}" when not adapting to situational demands. This is the foundation of ${firstName}'s behavioral identity, and it is remarkably stable across time and context.</p>
+      </div>
+      <div style="padding:18px 20px;background:#fff8f0;border-radius:10px;border:1.5px solid #e2c4a0;">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#c05621;margin-bottom:8px;">‚öôÔ∏è Adapted Style</div>
+        <p style="font-size:14px;color:var(--text-mid);line-height:1.7;margin:0;">${firstName}'s <strong>Adapted Style</strong> reflects how ${firstName} adjusts behavior to meet the demands of the current environment, role, or situation. This is the version of ${firstName} that colleagues observe day-to-day, and it may look different from the Natural Style depending on how much adaptation the context requires.</p>
+      </div>
+    </div>
+
+    ${gapNarrative}
+
+    <div style="padding:18px 20px;background:${discColorBg(p)};border-left:4px solid ${discColor(p)};border-radius:0 8px 8px 0;margin:18px 0;font-size:14px;color:var(--text-mid);line-height:1.75;">
+      <strong style="color:${discColor(p)};">What This Means for ${firstName}:</strong><br>${styleSpecific[p]}
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:var(--cp-navy);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">The Impact on People Who Work with ${firstName}</div>
+    <p style="font-size:14px;color:var(--text-mid);line-height:1.75;margin-bottom:16px;">${impactOnOthers[p]}</p>
+
+    <div style="padding:14px 18px;background:#e8f0fb;border-radius:8px;font-size:13px;color:#2060a0;line-height:1.65;">
+      <strong>A Note for ${firstName}:</strong> Understanding the gap between your Natural and Adapted style is one of the most practical tools available for managing energy, navigating role fit, and communicating authentically. Environments that allow you to operate closer to your Natural Style generally produce greater sustainability, satisfaction, and long-term performance. Use this awareness not as a constraint, but as a compass.
+    </div>
+  `;
+}
+
+function buildAdaptedGapNarrative(scores, firstName) {
+  const fn = firstName || (typeof userInfo !== 'undefined' && userInfo.name ? userInfo.name.split(' ')[0] : 'This individual');
+  const diffs = ['D','I','S','C'].map(t => ({t, diff: scores.adapted[t] - scores.natural[t]}));
+  const biggest = diffs.sort((a,b) => Math.abs(b.diff) - Math.abs(a.diff))[0];
+  if (Math.abs(biggest.diff) < 10) {
+    return `<p>${fn}'s Natural and Adapted style scores are closely aligned, suggesting that the current environment allows ${fn} to behave in ways consistent with core tendencies. This alignment typically produces lower stress and higher sustainability in the role.</p>`;
+  }
+  const dir = biggest.diff > 0 ? 'higher' : 'lower';
+  const meaning = biggest.diff > 0
+    ? `${fn} is dialing up ${discName(biggest.t)} behaviors ‚Äî showing more ${biggest.t === 'D' ? 'directness and assertiveness' : biggest.t === 'I' ? 'enthusiasm and social engagement' : biggest.t === 'S' ? 'patience and accommodation' : 'caution and precision'} ‚Äî in response to environmental demands`
+    : `${fn} may be tempering natural ${discName(biggest.t)} tendencies ‚Äî deliberately moderating ${biggest.t === 'D' ? 'assertiveness' : biggest.t === 'I' ? 'expressiveness' : biggest.t === 'S' ? 'accommodating nature' : 'analytical depth'} ‚Äî to fit environmental expectations`;
+  return `<p>The most notable gap in ${fn}'s profile is in the <strong>${discName(biggest.t)} (${biggest.t})</strong> dimension, where the Adapted score is ${Math.abs(biggest.diff)} points ${dir} than the Natural score. This suggests ${meaning}. It is worth ${fn} asking whether this adaptation is deliberate and strategic, or whether it reflects pressure to suppress a natural tendency.</p>`;
+}
+
+function buildCoachingInsights(scores, firstName) {
+  const p = scores.primary;
+  const fn = firstName || (userInfo.name || 'This individual').split(' ')[0];
+  const insights = {
+    D: `<p><strong>Leverage ${fn}'s decisiveness strategically.</strong> The ability to cut through ambiguity and drive toward outcomes is rare and valuable. The growth edge for high-D individuals is often found in intentionally slowing down to hear others out ‚Äî not because ${fn}'s judgment is wrong, but because buy-in makes execution faster. The people around ${fn} have information and perspective that can sharpen decisions.</p>
+        <p><strong>Build the emotional intelligence toolbox.</strong> High-D leaders who develop genuine empathy and awareness of how their directness lands on others dramatically expand their influence. This isn't about softening the edge ‚Äî it's about deploying it more precisely. ${fn}'s directness is an asset; learning when to dial it back is what makes it a leadership tool rather than a blunt instrument.</p>`,
+    I: `<p><strong>Channel ${fn}'s energy into sustained execution.</strong> The enthusiasm and ability to rally others are extraordinary gifts. The growth edge for high-I individuals is often follow-through ‚Äî transforming great ideas and momentum into completed, measurable outcomes. Building systems and accountability structures around ${fn}'s creative energy multiplies impact dramatically.</p>
+        <p><strong>Develop the analytical muscle.</strong> High-I professionals who learn to pair their communication strengths with data-driven thinking become exceptionally powerful. When ${fn}'s compelling story is grounded in evidence, it becomes nearly irresistible. This doesn't mean becoming data-dependent ‚Äî it means earning trust across all styles by demonstrating that the optimism is informed.</p>`,
+    S: `<p><strong>Own the value as the team's anchor.</strong> The reliability, loyalty, and consistency ${fn} brings are not passive qualities ‚Äî they are force multipliers for every team ${fn} is part of. The growth edge for high-S individuals is often speaking up earlier and more assertively, particularly when problems are developing that others might overlook. ${fn}'s perspective is valuable ‚Äî it just needs to be heard.</p>
+        <p><strong>Practice getting comfortable with conflict.</strong> The ability to address difficult conversations directly and early ‚Äî while still being warm and respectful ‚Äî is a skill that elevates good S-style leaders to great ones. ${fn}'s natural empathy actually makes these conversations more effective than ${fn} might believe. The goal isn't to become confrontational ‚Äî it's to stop letting important truths stay silent.</p>`,
+    C: `<p><strong>Use ${fn}'s precision as a leadership superpower.</strong> In a world where most people operate on assumption and intuition, the commitment to accuracy and thoroughness is a genuine competitive advantage. The growth edge for high-C individuals is often speed ‚Äî trusting that 80% certainty with action outperforms 100% certainty with delay in many situations. ${fn} doesn't need to abandon standards to move faster ‚Äî just recalibrate them situationally.</p>
+        <p><strong>Build executive presence.</strong> High-C professionals who invest in communication and presentation skills find that their depth of knowledge becomes far more visible and influential. ${fn}'s insights deserve a bigger audience ‚Äî packaging analysis for audiences who think more intuitively amplifies the impact of work that already meets the highest standard of quality.</p>`
+  };
+  return insights[p] || `<p>Continue exploring ${fn}'s profile to identify the highest-leverage development opportunities.</p>`;
+}
+
+/* ===================================================
+   TEAM REPORT
+=================================================== */
+function showTeamReport() {
+  buildGroupFilterBar();
+  buildTeamReport();
+  showScreen('team');
+}
+
+function buildTeamReport() {
+  const data = getFilteredTeamData();
+  const count = data.length;
+  const isFiltered = activeGroupFilter !== '__all__';
+  const groupLabel = isFiltered ? activeGroupFilter : (getKnownGroups().length > 0 ? 'All Groups' : '');
+
+  document.getElementById('team-summary-line').textContent =
+    `${count} participant${count !== 1 ? 's' : ''}${groupLabel ? ' ¬∑ ' + groupLabel : ''} ¬∑ ${new Date().toLocaleDateString('en-US', {month:'long', year:'numeric'})}`;
+  document.getElementById('team-date').textContent = 'Generated: ' + new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+
+  // Participants list
+  const pList = document.getElementById('team-participants-list');
+  pList.innerHTML = data.map((d, idx) => {
+    const initials = d.info.name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase();
+    const p = d.scores.primary;
+    const s = d.scores.secondary;
+    const profile = getProfileLabel(p, s);
+    const groupTag = d.group ? `<span class="group-tag" style="margin-left:6px;">üè¢ ${d.group}</span>` : '';
+    return `<div class="team-participant-row">
+      <div class="participant-avatar" style="background:${discColor(p)};">${initials}</div>
+      <div class="participant-info">
+        <div class="participant-name">${d.info.name}${groupTag}</div>
+        <div class="participant-title">${d.info.title} ¬∑ ${d.info.company}</div>
+        <div style="font-size:12px;color:${discColor(p)};font-weight:600;margin-top:2px;">${profile.name} (${p}${s||''})</div>
+      </div>
+      <div class="participant-scores">
+        <span class="p-score-badge d">D ${d.scores.natural.D}%</span>
+        <span class="p-score-badge i">I ${d.scores.natural.I}%</span>
+        <span class="p-score-badge s">S ${d.scores.natural.S}%</span>
+        <span class="p-score-badge c">C ${d.scores.natural.C}%</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Team composite scores (using filtered data)
+  const composite = {D:0, I:0, S:0, C:0};
+  const compositeAdapted = {D:0, I:0, S:0, C:0};
+  if (count > 0) {
+    data.forEach(d => {
+      ['D','I','S','C'].forEach(t => {
+        composite[t] += d.scores.natural[t];
+        compositeAdapted[t] += d.scores.adapted[t];
+      });
+    });
+    ['D','I','S','C'].forEach(t => {
+      composite[t] = Math.round(composite[t] / count);
+      compositeAdapted[t] = Math.round(compositeAdapted[t] / count);
+    });
+  }
+
+  document.getElementById('team-composite-charts').innerHTML =
+    buildChartHTML('Team Natural Style (Avg)', composite) +
+    buildChartHTML('Team Adapted Style (Avg)', compositeAdapted);
+
+  // Style groups with narratives
+  document.getElementById('team-style-groups').innerHTML = buildStyleGroups(data);
+
+  // Team insights
+  document.getElementById('team-insights-body').innerHTML = buildTeamInsights(composite, data);
+
+  // Full table ‚Äî add Group column if multiple groups exist
+  const multiGroup = getKnownGroups().length > 1;
+  const table = document.getElementById('team-full-table');
+  table.innerHTML = `
+    <thead><tr style="background:var(--cp-navy);color:white;">
+      <th style="padding:10px 14px;text-align:left;">Name</th>
+      ${multiGroup ? '<th style="padding:10px 14px;text-align:left;">Group</th>' : ''}
+      <th style="padding:10px 14px;text-align:left;">Profile</th>
+      <th style="padding:10px 14px;text-align:center;">D</th>
+      <th style="padding:10px 14px;text-align:center;">I</th>
+      <th style="padding:10px 14px;text-align:center;">S</th>
+      <th style="padding:10px 14px;text-align:center;">C</th>
+    </tr></thead>
+    <tbody>
+      ${data.map((d, idx) => {
+        const bg = idx % 2 === 0 ? 'var(--bg)' : 'white';
+        const pl = getProfileLabel(d.scores.primary, d.scores.secondary);
+        return `<tr style="background:${bg};">
+          <td style="padding:10px 14px;font-weight:600;">${d.info.name}</td>
+          ${multiGroup ? `<td style="padding:10px 14px;font-size:12px;color:var(--cp-blue);font-weight:600;">${d.group || '‚Äî'}</td>` : ''}
+          <td style="padding:10px 14px;color:${discColor(d.scores.primary)};font-weight:600;">${pl.name}</td>
+          <td style="padding:10px 14px;text-align:center;">${d.scores.natural.D}%</td>
+          <td style="padding:10px 14px;text-align:center;">${d.scores.natural.I}%</td>
+          <td style="padding:10px 14px;text-align:center;">${d.scores.natural.S}%</td>
+          <td style="padding:10px 14px;text-align:center;">${d.scores.natural.C}%</td>
+        </tr>`;
+      }).join('')}
+      <tr style="background:var(--cp-navy);color:white;font-weight:700;">
+        <td style="padding:10px 14px;" ${multiGroup ? 'colspan="2"' : ''}>Team Average${isFiltered ? ' ¬∑ ' + activeGroupFilter : ''}</td>
+        <td style="padding:10px 14px;">Composite</td>
+        <td style="padding:10px 14px;text-align:center;">${composite.D}%</td>
+        <td style="padding:10px 14px;text-align:center;">${composite.I}%</td>
+        <td style="padding:10px 14px;text-align:center;">${composite.S}%</td>
+        <td style="padding:10px 14px;text-align:center;">${composite.C}%</td>
+      </tr>
+    </tbody>`;
+}
+
+function buildStyleGroups(teamData) {
+  if (!teamData || teamData.length === 0) return '';
+
+  const styleConfig = {
+    D: {
+      label: 'Dominance',
+      color: '#c0392b',
+      bg: '#fdf2f1',
+      border: '#e8a09a',
+      icon: 'üî¥',
+      tagline: 'Results-focused, direct, decisive, competitive',
+      workStyle: 'D-style individuals are driven by results, challenge, and authority. They thrive when given autonomy and clear goals, and they move quickly toward outcomes.',
+      communicationTips: [
+        'Be direct and brief ‚Äî get to the point immediately.',
+        'Lead with the bottom line, then provide supporting detail only if asked.',
+        'Present options and let them decide; avoid telling them what to do.',
+        'Focus on results, ROI, and measurable impact.',
+        'Challenge them respectfully ‚Äî they respond to confident, factual pushback.',
+        'Respect their time; avoid small talk and lengthy preambles.',
+        'Give them ownership and authority over outcomes they are accountable for.'
+      ],
+      toAvoid: 'Avoid being indecisive, overly emotional, vague, or repetitive. Do not micromanage or challenge their authority publicly.',
+      motivators: 'Challenge, competition, achievement, control, and independence.',
+      underPressure: 'Under stress, D-styles may become blunt, impatient, or domineering. Give them space to decompress and refocus on the goal.'
+    },
+    I: {
+      label: 'Influence',
+      color: '#d4900a',
+      bg: '#fffaf0',
+      border: '#f5d08a',
+      icon: 'üü°',
+      tagline: 'Enthusiastic, collaborative, optimistic, people-focused',
+      workStyle: 'I-style individuals are energized by people, recognition, and enthusiasm. They excel at building relationships, inspiring others, and creating a positive team atmosphere.',
+      communicationTips: [
+        'Be warm, personable, and enthusiastic ‚Äî match their energy.',
+        'Allow time for social connection before jumping into tasks.',
+        'Recognize and celebrate their contributions publicly.',
+        'Appeal to how the work will help or inspire other people.',
+        'Keep details brief; provide the big picture and emotional context.',
+        'Use stories, examples, and visuals to make your point come alive.',
+        'Give them creative latitude and collaborative opportunities.'
+      ],
+      toAvoid: 'Avoid cold, overly formal, or purely analytical communication. Do not micromanage, isolate them from others, or pile on routine administrative tasks without acknowledgment.',
+      motivators: 'Recognition, social connection, enthusiasm, and the ability to inspire and motivate others.',
+      underPressure: 'Under stress, I-styles may become impulsive, scattered, or overly optimistic. Help them slow down, prioritize, and stay grounded in specifics.'
+    },
+    S: {
+      label: 'Steadiness',
+      color: '#27ae60',
+      bg: '#f2faf5',
+      border: '#90d4a8',
+      icon: 'üü¢',
+      tagline: 'Dependable, patient, loyal, team-oriented',
+      workStyle: 'S-style individuals value harmony, consistency, and meaningful relationships. They are the backbone of a stable team ‚Äî reliable, supportive, and highly attuned to the needs of those around them.',
+      communicationTips: [
+        'Be patient, sincere, and personal in your approach.',
+        'Provide clear expectations, timelines, and context before asking for action.',
+        'Give them time to process change ‚Äî avoid springing surprises.',
+        'Show genuine appreciation for their loyalty and consistency.',
+        'Create a psychologically safe space for them to voice concerns.',
+        'Avoid pressuring them into snap decisions.',
+        'Follow through on your commitments ‚Äî they take reliability seriously.'
+      ],
+      toAvoid: 'Avoid aggressive confrontation, rapid or unexplained change, or making them feel invisible or taken for granted. Do not rush them into decisions they haven\'t had time to consider.',
+      motivators: 'Stability, sincere appreciation, predictable routines, and the opportunity to support and be part of a team.',
+      underPressure: 'Under stress, S-styles may become overly accommodating, avoidant, or passive. Gently encourage them to express their needs and concerns directly.'
+    },
+    C: {
+      label: 'Conscientiousness',
+      color: '#2980b9',
+      bg: '#f1f7fd',
+      border: '#8ec6eb',
+      icon: 'üîµ',
+      tagline: 'Analytical, accurate, systematic, quality-driven',
+      workStyle: 'C-style individuals are motivated by accuracy, expertise, and doing things right. They bring rigor, thoroughness, and a commitment to quality that raises the standard for the entire team.',
+      communicationTips: [
+        'Come prepared with data, logic, and thorough documentation.',
+        'Be specific and precise ‚Äî avoid vague claims or unsupported assertions.',
+        'Give them time to analyze options before expecting a decision.',
+        'Focus conversations on quality, process, and accuracy.',
+        'Acknowledge their expertise and attention to detail.',
+        'Avoid emotional pressure or personal appeals; stick to facts.',
+        'Honor agreements precisely ‚Äî follow through on every detail you commit to.'
+      ],
+      toAvoid: 'Avoid vague direction, emotional manipulation, or cutting corners without explanation. Do not move too fast for them to do the analysis they need, and avoid public criticism of their work.',
+      motivators: 'Accuracy, quality, expertise, structured processes, and the opportunity to do deep, thorough work.',
+      underPressure: 'Under stress, C-styles may become overly critical, paralyzed by analysis, or withdrawn. Help them define "good enough" and create a safe boundary for imperfect action.'
+    }
+  };
+
+  // Group members by primary style
+  const groups = {D:[], I:[], S:[], C:[]};
+  teamData.forEach(function(d) {
+    var p = d.scores.primary;
+    if (groups[p]) groups[p].push(d);
+  });
+
+  // Only render groups that have at least one member
+  var html = '<div class="section-title" style="margin-bottom:16px;">Team Members by DISC Style ‚Äî Communication Guide</div>';
+  html += '<div style="font-size:13px;color:var(--text-light);margin-bottom:20px;">Understanding each style group helps the entire team communicate more effectively, reduce friction, and unlock individual strengths.</div>';
+
+  ['D','I','S','C'].forEach(function(style) {
+    var members = groups[style];
+    if (members.length === 0) return;
+    var cfg = styleConfig[style];
+
+    var memberCards = members.map(function(d) {
+      var initials = d.info.name.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+      var pl = getProfileLabel(d.scores.primary, d.scores.secondary);
+      return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:white;border-radius:8px;border:1px solid ' + cfg.border + ';margin-bottom:8px;">' +
+        '<div style="width:38px;height:38px;border-radius:50%;background:' + cfg.color + ';color:white;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' + initials + '</div>' +
+        '<div style="flex:1;">' +
+          '<div style="font-weight:700;font-size:14px;color:#1a202c;">' + d.info.name + '</div>' +
+          '<div style="font-size:12px;color:var(--text-light);">' + d.info.title + (d.info.company ? ' ¬∑ ' + d.info.company : '') + '</div>' +
+          '<div style="font-size:12px;font-weight:600;color:' + cfg.color + ';margin-top:2px;">' + pl.name + ' (D:' + d.scores.natural.D + '% I:' + d.scores.natural.I + '% S:' + d.scores.natural.S + '% C:' + d.scores.natural.C + '%)</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    var tipsList = cfg.communicationTips.map(function(tip) {
+      return '<li style="margin-bottom:6px;">' + tip + '</li>';
+    }).join('');
+
+    html += '<div style="background:' + cfg.bg + ';border:1.5px solid ' + cfg.border + ';border-radius:12px;margin-bottom:20px;overflow:hidden;">' +
+      // Header
+      '<div style="background:' + cfg.color + ';color:white;padding:16px 24px;display:flex;align-items:center;gap:14px;">' +
+        '<div style="font-size:28px;line-height:1;">' + cfg.icon + '</div>' +
+        '<div>' +
+          '<div style="font-size:18px;font-weight:800;letter-spacing:0.5px;">' + style + ' ‚Äî ' + cfg.label + '</div>' +
+          '<div style="font-size:12px;opacity:0.85;margin-top:2px;">' + cfg.tagline + '</div>' +
+        '</div>' +
+        '<div style="margin-left:auto;font-size:22px;font-weight:900;opacity:0.3;">' + members.length + '</div>' +
+      '</div>' +
+      // Body
+      '<div style="padding:20px 24px;">' +
+        // Members
+        '<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:' + cfg.color + ';font-weight:700;margin-bottom:10px;">Team Members in This Style Group</div>' +
+        memberCards +
+        // Work style overview
+        '<div style="margin-top:16px;font-size:13px;color:#2d3748;line-height:1.7;">' +
+          '<strong>How they work:</strong> ' + cfg.workStyle +
+        '</div>' +
+        // Communication tips
+        '<div style="margin-top:14px;">' +
+          '<div style="font-size:13px;font-weight:700;color:' + cfg.color + ';margin-bottom:8px;">How to Communicate Effectively with ' + cfg.label + '-Style Team Members</div>' +
+          '<ul style="font-size:13px;color:#2d3748;line-height:1.75;margin:0;padding-left:20px;">' + tipsList + '</ul>' +
+        '</div>' +
+        // What to avoid
+        '<div style="margin-top:14px;padding:12px 16px;background:white;border-left:3px solid ' + cfg.color + ';border-radius:0 8px 8px 0;font-size:13px;color:#2d3748;line-height:1.65;">' +
+          '<strong>What to avoid:</strong> ' + cfg.toAvoid +
+        '</div>' +
+        // Motivators + Under Pressure
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">' +
+          '<div style="padding:12px 14px;background:white;border-radius:8px;border:1px solid ' + cfg.border + ';font-size:12px;color:#2d3748;line-height:1.6;">' +
+            '<div style="font-weight:700;color:' + cfg.color + ';margin-bottom:4px;">What Motivates Them</div>' + cfg.motivators +
+          '</div>' +
+          '<div style="padding:12px 14px;background:white;border-radius:8px;border:1px solid ' + cfg.border + ';font-size:12px;color:#2d3748;line-height:1.6;">' +
+            '<div style="font-weight:700;color:' + cfg.color + ';margin-bottom:4px;">Under Pressure</div>' + cfg.underPressure +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  });
+
+  return html;
+}
+
+function buildTeamInsights(composite, teamData) {
+  const sorted = ['D','I','S','C'].sort((a,b) => composite[b] - composite[a]);
+  const dominant = sorted[0];
+  const weakest = sorted[3];
+
+  const primaryCounts = {D:0, I:0, S:0, C:0};
+  teamData.forEach(d => primaryCounts[d.scores.primary]++);
+  const hasDiversity = Object.values(primaryCounts).filter(v => v > 0).length >= 3;
+
+  const strengths = {
+    D: 'decisive leadership and a strong drive toward results',
+    I: 'high energy, strong communication, and ability to motivate and inspire',
+    S: 'reliability, collaboration, and the ability to sustain long-term relationships',
+    C: 'analytical rigor, attention to quality, and systematic problem-solving'
+  };
+  const gaps = {
+    D: 'patience, collaboration, and attention to process and people dynamics',
+    I: 'follow-through, analytical depth, and attention to detail',
+    S: 'assertiveness, urgency, and comfort with conflict or rapid change',
+    C: 'speed of decision-making, risk tolerance, and informal communication'
+  };
+
+  return `
+    <p><strong>Team Dominant Style: ${discName(dominant)} (${dominant})</strong><br>
+    Your team's collective profile leans toward <strong>${discName(dominant)}</strong> as its most prominent dimension. This brings a natural team strength in ${strengths[dominant]}. When this strength is well-deployed, it becomes a competitive advantage.</p>
+
+    <p><strong>Potential Team Blind Spot: ${discName(weakest)} (${weakest})</strong><br>
+    The <strong>${discName(weakest)}</strong> dimension is collectively the lowest across your team. This may create gaps in ${gaps[weakest]}. This is not a weakness to be fixed, but an area to be aware of‚Äîespecially when your work requires these capabilities. Consider deliberate strategies to ensure this dimension is not systematically overlooked in team decisions.</p>
+
+    ${hasDiversity
+      ? `<p><strong>Diversity of Styles:</strong> Your team includes members across multiple DISC styles, which is a genuine strength. Diverse behavioral profiles mean your team has the raw capacity for well-rounded decision-making, creative tension, and mutual support. The key is learning to leverage those differences intentionally rather than letting them become sources of friction.</p>`
+      : `<p><strong>Style Concentration:</strong> Your team currently shows concentration in one or two DISC styles. While this creates alignment and shared strengths, it also means certain perspectives and approaches may be systematically underrepresented. Consider this when making hiring decisions or when seeking feedback on important initiatives.</p>`
+    }
+
+    <p><strong>Recommendation for Team Leaders:</strong> Use this profile not as a label but as a starting point for deeper conversation. Share individual reports, discuss how different styles contribute to team success, and create explicit norms around communication preferences. Teams that openly discuss behavioral diversity consistently outperform those that treat it as irrelevant.</p>
+  `;
+}
+
+/* ===================================================
+   TAKE ANOTHER
+=================================================== */
+function takeAnother() {
+  userInfo = {};
+  responses = new Array(25).fill(null).map(() => ({most: null, least: null}));
+  currentQPage = 0;
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-company').value = '';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-email').value = '';
+  // Refresh join list with latest groups, default to join mode if groups exist
+  populateGroupJoinList();
+  if (getKnownGroups().length > 0) {
+    selectGroupMode('join');
+    // Pre-select current group if one is active
+    const sel = document.getElementById('g-join-select');
+    if (currentGroup) {
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === currentGroup) { sel.selectedIndex = i; break; }
+      }
+    }
+  } else {
+    selectGroupMode('new');
+  }
+  document.getElementById('group-error').classList.add('hidden');
+  showScreen('group');
+}
+
+/* Helper: open email setup modal (avoids quote-nesting in strings) */
+/* ===================================================
+   EMAIL CONFIGURATION
+   -------------------------------------------------
+   Emails send automatically via EmailJS (free, no
+   server needed). Setup takes ~5 minutes once.
+   Credentials are stored in the URL hash so they
+   persist as long as you use the same link/bookmark.
+=================================================== */
+
+const JERRY_EMAIL = 'jcovella@claritypartnersinc.com';
+
+// Runtime config (loaded from URL hash or left as defaults)
+var EMAIL = {
+  serviceId: 'service_5g3pg9y',
+  templateRespondent: 'template_1g0260p',
+  templateTeam: 'template_7clvu0l',
+  publicKey: 'bAJcJsVICpogCP6X5',
+  isReady: function() { return true; }
+};
+
+/* ===================================================
+   HTML EMAIL BUILDERS
+=================================================== */
+function buildScoreBar(pct, color) {
+  const w = Math.max(4, Math.round(pct * 1.8));
+  return `<td style="padding:8px 12px;"><div style="display:flex;align-items:center;gap:10px;"><div style="height:14px;width:${w}px;background:${color};border-radius:3px;"></div><span style="font-size:13px;color:#4a5568;">${pct}%</span></div></td>`;
+}
+
+function buildRespondentEmailHtml(scores, info) {
+  const pl = getProfileLabel(scores.primary, scores.secondary);
+  const N  = NARRATIVES[scores.primary];
+  const date = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const dColors = {D:'#c0392b',I:'#d4860a',S:'#27855f',C:'#2060a0'};
+  const dBg     = {D:'#fdf0ef',I:'#fef8ee',S:'#f0faf5',C:'#eef4fc'};
+  const p = scores.primary;
+  const firstName = info.name.split(' ')[0];
+
+  const scoreRows = ['D','I','S','C'].map(t => `
+    <tr style="border-bottom:1px solid #e2e8f0;">
+      <td style="padding:10px 14px;font-weight:700;color:${dColors[t]};white-space:nowrap;">${t} \u2013 ${discName(t)}</td>
+      ${buildScoreBar(scores.natural[t], dColors[t])}
+      ${buildScoreBar(scores.adapted[t], dColors[t]+'88')}
+      <td style="padding:10px 14px;"><span style="background:${dBg[t]};color:${dColors[t]};padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">${getIntensity(scores.natural[t])}</span></td>
+    </tr>`).join('');
+
+  const successRows = N.successItems.slice(0,5).map(i =>
+    `<tr><td style="padding:5px 0;font-size:13px;color:#4a5568;">\u2713  ${i}</td></tr>`).join('');
+  const challengeRows = N.challengeItems.slice(0,5).map(i =>
+    `<tr><td style="padding:5px 0;font-size:13px;color:#4a5568;">\u2192  ${i}</td></tr>`).join('');
+
+  const charTraits = {
+    D: {
+      value: `${firstName} brings uncommon clarity of purpose \u2014 a willingness to take the lead, cut through noise, and champion results-oriented action that is a genuine force multiplier for any team.`,
+      challenge: `The same drive that makes ${firstName} effective can create friction. Directness can shade into bluntness under pressure, and pace can outrun others\u2019 comfort with the speed of decisions.`
+    },
+    I: {
+      value: `${firstName} is a natural energizer whose ability to inspire, persuade, and rally others around a shared vision is a rare and valuable gift. ${firstName} often becomes the cultural heartbeat of any team.`,
+      challenge: `The enthusiasm that energizes a team can sometimes translate into overpromising or difficulty prioritizing. Follow-through on detailed commitments may require deliberate effort.`
+    },
+    S: {
+      value: `${firstName} brings something genuinely rare: the consistency of character that creates psychological safety. People trust ${firstName} because what ${firstName} says, ${firstName} does.`,
+      challenge: `The preference for harmony can become a limitation in environments requiring speed or direct confrontation. Important concerns may go unspoken to preserve the peace.`
+    },
+    C: {
+      value: `${firstName} brings rigorous intellectual honesty \u2014 not guessing, not assuming, but investigating and validating. ${firstName}\u2019s conclusions can be trusted, elevating every project they touch.`,
+      challenge: `The pursuit of the perfect answer can slow decision-making when a good answer today outperforms the best answer next month. High standards can feel like a moving target to teammates.`
+    }
+  };
+
+  const dosWith = {
+    D: ['Be clear, specific, brief, and to the point','Lead with the bottom line and key results','Come prepared with a well-organized summary','Give options and let them decide','Be direct \u2014 they respect confident, factual pushback'],
+    I: ['Be warm, upbeat, and enthusiastic \u2014 match the energy','Allow time for social connection before tasks','Recognize contributions publicly and sincerely','Use stories and visuals over data-heavy presentations','Give creative freedom and collaborative opportunities'],
+    S: ['Build rapport and personal connection first','Provide clear context when introducing change','Ask for opinion and genuinely wait for the answer','Follow through on every commitment','Create space for concerns to be shared without judgment'],
+    C: ['Prepare your case in advance with data and logic','Be accurate and realistic \u2014 never overstate','Give time to review before expecting a decision','Respect the depth of their analysis','Provide written summaries wherever possible']
+  };
+  const dontsWith = {
+    D: ['Rambling or unfocused communication','Vague expectations or leaving issues unresolved','Micromanaging or excessive check-ins','Appealing to feelings rather than outcomes','Appearing disorganized or unprepared'],
+    I: ['Cold or purely transactional communication','Excessive detail without human context','Isolating them from interaction','Piling on routine tasks without acknowledgment','Dismissing enthusiasm as unrealistic'],
+    S: ['Rushing to conclusions without adequate time','Springing sudden changes without explanation','Being blunt, abrasive, or impatient','Ignoring consistent, quiet contributions','Taking loyalty or reliability for granted'],
+    C: ['Being glib or dismissive of detail','Pushing for quick decisions without information','Disorganized or unclear expectations','Emotional appeals as substitutes for evidence','Surprising them with undisclosed changes']
+  };
+
+  const dosEmailRows  = dosWith[p].map(d  => `<tr><td style="padding:5px 0;font-size:13px;color:#4a5568;">\u2713  ${d}</td></tr>`).join('');
+  const dontsEmailRows = dontsWith[p].map(d => `<tr><td style="padding:5px 0;font-size:13px;color:#4a5568;">\u2717  ${d}</td></tr>`).join('');
+
+  const percUnderPressure = {
+    D: `Under moderate pressure, others may perceive ${firstName} as <em>impatient or dismissive</em>. Under major stress, the competitive drive can intensify, making ${firstName} appear <em>domineering or combative</em>.`,
+    I: `Under moderate pressure, others may perceive ${firstName} as <em>scattered or over-promising</em>. Under major stress, the warmth may give way to reactivity, and ${firstName} may appear <em>impulsive or emotionally volatile</em>.`,
+    S: `Under moderate pressure, others may perceive ${firstName} as <em>passive or conflict-avoidant</em>. Under major stress, the patient exterior can close down, and ${firstName} may appear <em>withdrawn or quietly resentful</em>.`,
+    C: `Under moderate pressure, others may perceive ${firstName} as <em>overly critical or slow to act</em>. Under major stress, this can deepen into appearing <em>withdrawn, hypercritical, or inflexible</em>.`
+  };
+
+  const gapText = buildAdaptedGapNarrative(scores, firstName);
+
+  return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+<div style="max-width:640px;margin:24px auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#1a3a5c,#1a4d7a);padding:32px 36px;">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:8px;">DISC Behavioral Assessment \u00b7 Individual Report</div>
+    <div style="font-size:26px;font-weight:800;color:white;margin-bottom:4px;">${info.name}</div>
+    <div style="font-size:14px;color:rgba(255,255,255,.7);">${info.title} \u00b7 ${info.company}</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:8px;">Assessment Date: ${date}${info.group ? '  \u00b7  Group: ' + info.group : ''}</div>
+    <div style="margin-top:20px;display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:10px 18px;">
+      <span style="font-size:20px;font-weight:900;color:${dColors[p]};">${scores.primary}${scores.secondary||''}</span>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:white;">${pl.name}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);">${pl.subtitle}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score Table -->
+  <div style="padding:28px 36px 0;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#718096;margin-bottom:14px;">DISC Profile Scores</div>
+    <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+      <thead><tr style="background:#1a3a5c;color:white;">
+        <th style="padding:10px 14px;text-align:left;font-size:12px;">Dimension</th>
+        <th style="padding:10px 14px;text-align:left;font-size:12px;">Natural Style</th>
+        <th style="padding:10px 14px;text-align:left;font-size:12px;">Adapted Style</th>
+        <th style="padding:10px 14px;text-align:left;font-size:12px;">Intensity</th>
+      </tr></thead>
+      <tbody>${scoreRows}</tbody>
+    </table>
+  </div>
+
+  <!-- Overview -->
+  <div style="padding:24px 36px 0;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#718096;margin-bottom:12px;">Profile Overview</div>
+    <p style="font-size:14px;color:#4a5568;line-height:1.75;margin:0 0 14px;">${N.overview}</p>
+    <p style="font-size:14px;color:#4a5568;line-height:1.75;margin:0;"><strong>Communication Style:</strong> ${N.communication}</p>
+  </div>
+
+  <!-- Personal Behavioral Characteristics -->
+  <div style="padding:24px 36px 0;">
+    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a3a5c;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">Personal Behavioral Characteristics</div>
+    <div style="background:${dBg[p]};border-left:4px solid ${dColors[p]};border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:12px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${dColors[p]};margin-bottom:6px;">The Unique Value ${firstName} Brings</div>
+      <p style="font-size:13px;color:#4a5568;line-height:1.7;margin:0;">${charTraits[p].value}</p>
+    </div>
+    <div style="background:#fff8f0;border-left:4px solid #c05621;border-radius:0 8px 8px 0;padding:14px 18px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#c05621;margin-bottom:6px;">Challenges to Be Aware Of</div>
+      <p style="font-size:13px;color:#4a5568;line-height:1.7;margin:0;">${charTraits[p].challenge}</p>
+    </div>
+  </div>
+
+  <!-- Success / Challenge -->
+  <div style="padding:24px 36px 0;display:flex;gap:20px;">
+    <div style="flex:1;background:#f0faf5;border-radius:8px;padding:18px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#27855f;margin-bottom:10px;">Best Scenarios for Success</div>
+      <table style="width:100%;border-collapse:collapse;">${successRows}</table>
+    </div>
+    <div style="flex:1;background:#fff8f0;border-radius:8px;padding:18px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#c05621;margin-bottom:10px;">Challenging Scenarios</div>
+      <table style="width:100%;border-collapse:collapse;">${challengeRows}</table>
+    </div>
+  </div>
+
+  <!-- DISC Communication Dos and Donts -->
+  <div style="padding:24px 36px 0;">
+    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a3a5c;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">DISC Communication Guide</div>
+    <p style="font-size:13px;color:#4a5568;margin-bottom:14px;">When communicating with <strong>${firstName}</strong>, keep these guidelines in mind:</p>
+    <div style="display:flex;gap:16px;">
+      <div style="flex:1;background:#f0faf5;border-radius:8px;padding:16px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#27855f;margin-bottom:10px;">\u2713 Do These Things</div>
+        <table style="width:100%;border-collapse:collapse;">${dosEmailRows}</table>
+      </div>
+      <div style="flex:1;background:#fff8f0;border-radius:8px;padding:16px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#c0392b;margin-bottom:10px;">\u2717 Avoid These Things</div>
+        <table style="width:100%;border-collapse:collapse;">${dontsEmailRows}</table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Perceptions -->
+  <div style="padding:24px 36px 0;">
+    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a3a5c;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">Perceptions Under Pressure</div>
+    <div style="background:#fff8e8;border-left:4px solid #d4860a;border-radius:0 8px 8px 0;padding:14px 18px;">
+      <p style="font-size:13px;color:#4a5568;line-height:1.7;margin:0;">${percUnderPressure[p]}</p>
+    </div>
+    <p style="font-size:12px;color:#718096;margin-top:10px;line-height:1.6;">The complete on-screen report includes a full breakdown across moderate and major pressure levels, with empowering insights for ${firstName} to manage these dynamics proactively.</p>
+  </div>
+
+  <!-- Natural vs Adapted -->
+  <div style="padding:24px 36px 0;">
+    <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a3a5c;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;">Natural Style vs. Adapted Style</div>
+    <div style="display:flex;gap:14px;margin-bottom:14px;">
+      <div style="flex:1;background:#eef4fc;border-radius:8px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:#2060a0;margin-bottom:5px;">\ud83c\udf3f Natural Style</div>
+        <div style="font-size:12px;color:#4a5568;line-height:1.6;">How ${firstName} behaves when authentic and relaxed \u2014 the foundation of behavioral identity.</div>
+      </div>
+      <div style="flex:1;background:#fff8f0;border-radius:8px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;color:#c05621;margin-bottom:5px;">\u2699\ufe0f Adapted Style</div>
+        <div style="font-size:12px;color:#4a5568;line-height:1.6;">How ${firstName} adjusts behavior to meet the demands of the current environment or role.</div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:#4a5568;line-height:1.7;background:#e8f0fb;border-radius:8px;padding:14px 18px;">${gapText.replace(/<\/?p>/g,'')}</div>
+  </div>
+
+  <!-- Footer -->
+  <div style="padding:28px 36px;margin-top:24px;border-top:1px solid #e2e8f0;background:#f7fafc;">
+    <div style="font-size:13px;color:#4a5568;margin-bottom:6px;">
+      ${firstName}\u2019s complete interactive report \u2014 including the full perceptions analysis, cross-DISC communication guide, and coaching insights \u2014 is available in the assessment app. For coaching support and interpretation, contact:
+    </div>
+    <div style="font-size:13px;font-weight:700;color:#1a3a5c;">Jerry Covella \u00b7 Master Coach \u00b7 Clarity Partners Coaching Network</div>
+    <div style="font-size:12px;color:#718096;">609-364-6705 \u00b7 jcovella@claritypartnersinc.com \u00b7 claritypartnersinc.com</div>
+    <div style="font-size:11px;color:#a0aec0;margin-top:8px;font-style:italic;">\u201cYour success depends on clarity.\u201d</div>
+  </div>
+</div></body></html>`;
+}
+
+
+function buildJerryEmailHtml(scores, info, isTeamUpdate) {
+  const pl    = getProfileLabel(scores.primary, scores.secondary);
+  const date  = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const dColors = {D:'#c0392b',I:'#d4860a',S:'#27855f',C:'#2060a0'};
+  const dBg     = {D:'#fdf0ef',I:'#fef8ee',S:'#f0faf5',C:'#eef4fc'};
+
+  // For email: show the group roster filtered to same group as this participant
+  const groupName = info.group || '';
+  const rosterData = groupName
+    ? teamData.filter(d => d.group === groupName)
+    : teamData;
+  const count = rosterData.length;
+  const totalAll = teamData.length;
+  const multiGroup = getKnownGroups().length > 1;
+
+  const scoreChips = ['D','I','S','C'].map(t =>
+    `<span style="display:inline-block;background:${dBg[t]};color:${dColors[t]};padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;margin:3px;">${t}: ${scores.natural[t]}%</span>`).join('');
+
+  // Group composite
+  const composite = {D:0,I:0,S:0,C:0};
+  rosterData.forEach(d => ['D','I','S','C'].forEach(t => composite[t] += d.scores.natural[t]));
+  if (count > 0) ['D','I','S','C'].forEach(t => composite[t] = Math.round(composite[t]/count));
+  const sorted = ['D','I','S','C'].sort((a,b) => composite[b]-composite[a]);
+
+  const teamRows = rosterData.map((d,i) => {
+    const rpl = getProfileLabel(d.scores.primary, d.scores.secondary);
+    const bg  = i % 2 === 0 ? '#f7fafc' : 'white';
+    return `<tr style="background:${bg};">
+      <td style="padding:9px 12px;font-weight:600;font-size:13px;">${d.info.name}</td>
+      <td style="padding:9px 12px;font-size:12px;color:#718096;">${d.info.title}</td>
+      <td style="padding:9px 12px;font-size:12px;color:#718096;">${d.info.company}</td>
+      <td style="padding:9px 12px;font-weight:700;font-size:12px;color:${dColors[d.scores.primary]};">${rpl.name} (${d.scores.primary}${d.scores.secondary||''})</td>
+      <td style="padding:9px 12px;font-size:12px;">D:${d.scores.natural.D}% I:${d.scores.natural.I}% S:${d.scores.natural.S}% C:${d.scores.natural.C}%</td>
+    </tr>`;
+  }).join('');
+
+  const compositeRow = `<tr style="background:#1a3a5c;color:white;font-weight:700;">
+    <td style="padding:9px 12px;font-size:13px;" colspan="3">Group Average (${count} member${count!==1?'s':''})</td>
+    <td style="padding:9px 12px;font-size:12px;">Composite</td>
+    <td style="padding:9px 12px;font-size:12px;">D:${composite.D}% I:${composite.I}% S:${composite.S}% C:${composite.C}%</td>
+  </tr>`;
+
+  const groupBadge = groupName
+    ? `<span style="display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:14px;padding:4px 14px;font-size:12px;font-weight:700;color:white;margin-top:10px;">üè¢ ${groupName}</span>`
+    : '';
+
+  const allGroupsSummary = multiGroup && totalAll > count ? `
+  <div style="padding:16px 36px 0;">
+    <div style="background:#fff8e8;border:1px solid #f6c94e;border-radius:8px;padding:14px 18px;font-size:13px;color:#744210;">
+      <strong>üìä All Groups:</strong> ${totalAll} total participants across ${getKnownGroups().length} groups.
+      This report shows the <strong>${groupName}</strong> group (${count} participant${count!==1?'s':''}).
+    </div>
+  </div>` : '';
+
+  return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;">
+<div style="max-width:700px;margin:24px auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#1a3a5c,#1a4d7a);padding:28px 36px;">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:6px;">
+      ${isTeamUpdate ? 'DISC Assessment ¬∑ New Submission + Group Update' : 'DISC Assessment ¬∑ New Submission'}
+    </div>
+    <div style="font-size:22px;font-weight:800;color:white;margin-bottom:4px;">
+      ${info.name} <span style="font-size:16px;font-weight:500;color:rgba(255,255,255,.7);">¬∑ ${pl.name} (${scores.primary}${scores.secondary||''})</span>
+    </div>
+    <div style="font-size:13px;color:rgba(255,255,255,.65);">${info.title} ¬∑ ${info.company} ¬∑ ${date}</div>
+    ${groupBadge}
+    <div style="margin-top:14px;">${scoreChips}</div>
+  </div>
+
+  ${allGroupsSummary}
+
+  <!-- Individual summary -->
+  <div style="padding:24px 36px 0;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#718096;margin-bottom:12px;">Individual Scores ‚Äî ${info.name}</div>
+    <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;">
+      <thead><tr style="background:#1a3a5c;color:white;">
+        <th style="padding:9px 14px;text-align:left;font-size:12px;">Dimension</th>
+        <th style="padding:9px 14px;text-align:left;font-size:12px;">Natural</th>
+        <th style="padding:9px 14px;text-align:left;font-size:12px;">Adapted</th>
+        <th style="padding:9px 14px;text-align:left;font-size:12px;">Intensity</th>
+      </tr></thead>
+      <tbody>
+        ${['D','I','S','C'].map((t,i) => `<tr style="background:${i%2===0?'#f7fafc':'white'};border-bottom:1px solid #e2e8f0;">
+          <td style="padding:9px 14px;font-weight:700;color:${dColors[t]};">${t} ‚Äì ${discName(t)}</td>
+          <td style="padding:9px 14px;">${scores.natural[t]}%</td>
+          <td style="padding:9px 14px;">${scores.adapted[t]}%</td>
+          <td style="padding:9px 14px;"><span style="background:${dBg[t]};color:${dColors[t]};padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">${getIntensity(scores.natural[t])}</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Group Roster -->
+  <div style="padding:24px 36px 0;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#718096;margin-bottom:12px;">
+      ${groupName ? `Group Roster ‚Äî ${groupName}` : 'Full Roster'} (${count} participant${count!==1?'s':''})
+      ${isTeamUpdate ? ' ¬∑ <span style="color:#38a169;">Updated with this submission</span>' : ''}
+    </div>
+    <table style="width:100%;border-collapse:collapse;border:1px solid #e2e8f0;font-size:13px;">
+      <thead><tr style="background:#2060a0;color:white;">
+        <th style="padding:9px 12px;text-align:left;">Name</th>
+        <th style="padding:9px 12px;text-align:left;">Title</th>
+        <th style="padding:9px 12px;text-align:left;">Company</th>
+        <th style="padding:9px 12px;text-align:left;">Profile</th>
+        <th style="padding:9px 12px;text-align:left;">Scores</th>
+      </tr></thead>
+      <tbody>${teamRows}${compositeRow}</tbody>
+    </table>
+  </div>
+
+  <!-- Group Insight -->
+  <div style="padding:20px 36px 0;">
+    <div style="background:#e8f0fb;border-radius:8px;padding:16px 20px;border-left:4px solid #2060a0;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#2060a0;margin-bottom:6px;">Group Dynamics Snapshot${groupName ? ' ‚Äî ' + groupName : ''}</div>
+      <div style="font-size:13px;color:#4a5568;line-height:1.65;">
+        <strong>Dominant Style:</strong> ${discName(sorted[0])} (${sorted[0]}) ¬†¬∑¬†
+        <strong>Potential Gap:</strong> ${discName(sorted[3])} (${sorted[3]}) ¬†¬∑¬†
+        <strong>Group Size:</strong> ${count} participant${count!==1?'s':''}
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="padding:24px 36px;margin-top:20px;border-top:1px solid #e2e8f0;background:#f7fafc;">
+    <div style="font-size:13px;color:#4a5568;">Generated by the <strong>Clarity Partners DISC Behavioral Assessment</strong></div>
+    <div style="font-size:11px;color:#a0aec0;margin-top:4px;font-style:italic;">"Your success depends on clarity." ¬∑ claritypartnersinc.com</div>
+  </div>
+</div></body></html>`;
+}
+
+function buildTestEmailHtml() {
+  return `<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;background:#f4f7fb;padding:40px;">
+<div style="max-width:480px;margin:0 auto;background:white;border-radius:12px;padding:36px;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+  <div style="font-size:32px;text-align:center;margin-bottom:16px;">‚úÖ</div>
+  <h2 style="text-align:center;color:#1a3a5c;margin:0 0 12px;">Email Configuration Successful</h2>
+  <p style="color:#4a5568;text-align:center;font-size:14px;">Your Clarity Partners DISC Assessment is now configured to send assessment results automatically ‚Äî no extra steps required.</p>
+  <div style="background:#e8f0fb;border-radius:8px;padding:16px;margin-top:20px;font-size:13px;color:#2060a0;text-align:center;">
+    <strong>Every time a participant completes the assessment:</strong><br>
+    They receive their personal DISC report ¬∑ You receive their results + updated team summary
+  </div>
+  <p style="font-size:11px;color:#a0aec0;text-align:center;margin-top:20px;font-style:italic;">"Your success depends on clarity." ‚Äî Clarity Partners Coaching Network</p>
+</div></body></html>`;
+}
+
+/* ===================================================
+   EMAIL SEND FUNCTIONS (EmailJS)
+=================================================== */
+/* ===================================================
+   EMAILJS SEND ‚Äî direct REST API so HTML body is
+   never parsed as template variables by EmailJS v4.
+=================================================== */
+async function ejsSend(templateId, toEmail, subject, htmlBody) {
+  const payload = {
+    service_id:  EMAIL.serviceId,
+    template_id: templateId,
+    user_id:     EMAIL.publicKey,
+    template_params: {
+      to_email:     toEmail,
+      subject:      subject,
+      message_html: htmlBody
+    }
+  };
+  const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error('EmailJS ' + res.status + ': ' + txt);
+  }
+  return res;
+}
+
+async function sendAllEmails(scores, info) {
+  // Declare status elements at the top (avoids Temporal Dead Zone errors)
+  var rptIcon = document.getElementById('rpt-email-icon');
+  var rptMsg  = document.getElementById('rpt-email-msg');
+  if (!EMAIL.isReady()) {
+    // Fallback: open mailto: links
+    if (rptIcon) rptIcon.textContent = 'üì®';
+    if (rptMsg) rptMsg.innerHTML = ' Email draft opened ‚Äî click Send in your email client.';
+    sendMailtoFallback(scores, info);
+    showToast('üì®', 'Email draft opened', 'Click Send in your email client to deliver. Configure EmailJS for fully automatic delivery.', 8000);
+    return;
+  }
+  // Update inline status on report screen
+  if (rptIcon) rptIcon.textContent = '‚è≥';
+  if (rptMsg)  rptMsg.textContent  = ' Sending reports automatically‚Ä¶';
+
+  if (typeof emailjs === 'undefined') {
+    sendMailtoFallback(scores, info);
+    if (rptIcon) rptIcon.textContent = 'üì®';
+    if (rptMsg) rptMsg.innerHTML = ' Email draft opened ‚Äî EmailJS library unavailable.';
+    showToast('‚ö†', 'EmailJS not loaded', 'Using email draft fallback instead.', 6000);
+    return;
+  }
+  try {
+    const respondentHtml = buildRespondentEmailHtml(scores, info);
+    const jerryHtml      = buildJerryEmailHtml(scores, info, teamData.length > 1);
+
+    // Email 1: Respondent gets ONLY their personal individual report ‚Äî no group data
+    const p1 = ejsSend(
+      EMAIL.templateRespondent,
+      info.email,
+      `Your DISC Profile: ${getProfileLabel(scores.primary, scores.secondary).name} ‚Äî Clarity Partners`,
+      respondentHtml
+    );
+
+    // Email 2: Jerry ONLY gets the full group report ‚Äî respondent never receives this
+    const p2 = ejsSend(
+      EMAIL.templateTeam,
+      JERRY_EMAIL,
+      `DISC Report: ${info.name} (${scores.primary}${scores.secondary||''}) ¬∑ ${info.company}${info.group ? ' ¬∑ ' + info.group : ''} ¬∑ ${teamData.length} on team`,
+      jerryHtml
+    );
+
+    await Promise.all([p1, p2]);
+    if (rptIcon) rptIcon.textContent = '‚úÖ';
+    if (rptMsg) rptMsg.innerHTML = `Your personal report has been sent to <strong>${info.email}</strong>. The group report has been sent to your coach.`;
+    showToast('‚úÖ', 'Reports delivered', `Your personal report ‚Üí ${info.email}`, 6000);
+  } catch(e) {
+    console.error('EmailJS error:', e);
+    // Fallback to mailto on error
+    sendMailtoFallback(scores, info);
+    if (rptIcon) rptIcon.textContent = 'üì®';
+    if (rptMsg) rptMsg.innerHTML = ' Email draft opened ‚Äî click Send in your email client.';
+    showToast('‚ö†', 'Auto-send failed', 'Email draft opened as fallback. Check your EmailJS configuration.', 8000);
+  }
+}
+
+async function resendTeamReport() {
+  if (!teamData.length) return;
+  const last = teamData[teamData.length - 1];
+  if (!EMAIL.isReady()) {
+    sendTeamMailtoFallback();
+    showToast('üì®', 'Team report draft opened', 'Click Send in your email client.', 6000);
+    return;
+  }
+  if (typeof emailjs === 'undefined') {
+    sendTeamMailtoFallback();
+    showToast('‚ö†', 'EmailJS not loaded', 'Using email draft fallback instead.', 6000);
+    return;
+  }
+  try {
+    const jerryHtml = buildJerryEmailHtml(last.scores, last.info, true);
+    await ejsSend(
+      EMAIL.templateTeam,
+      JERRY_EMAIL,
+      `DISC Group Update ‚Äî ${activeGroupFilter !== '__all__' ? activeGroupFilter + ' ¬∑ ' : ''}${teamData.length} Participants ‚Äî ${new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'})}`,
+      jerryHtml
+    );
+    showToast('‚úÖ', 'Group report sent', `Updated group summary ‚Üí your coach`, 5000);
+  } catch(e) {
+    sendTeamMailtoFallback();
+    showToast('‚ö†', 'Auto-send failed', 'Email draft opened as fallback.', 6000);
+  }
+}
+
+/* Mailto fallbacks (used when EmailJS not configured) */
+function sendMailtoFallback(scores, info) {
+  // Respondent gets only their personal plain-text report
+  const respondentBody = buildPlainTextReport(scores, info);
+  const respondentSubject = encodeURIComponent(`Your DISC Profile: ${getProfileLabel(scores.primary, scores.secondary).name} ‚Äî Clarity Partners`);
+  triggerMailto(`mailto:${info.email}?subject=${respondentSubject}&body=${encodeURIComponent(respondentBody)}`);
+
+  // Jerry gets the group report separately ‚Äî respondent is NOT cc'd
+  const jerryBody = buildPlainTextReport(scores, info);
+  const jerrySubject = encodeURIComponent(`DISC Report: ${info.name} (${scores.primary}${scores.secondary||''}) ‚Äî ${info.company}${info.group ? ' ‚Äî ' + info.group : ''}`);
+  triggerMailto(`mailto:${JERRY_EMAIL}?subject=${jerrySubject}&body=${encodeURIComponent(jerryBody)}`);
+}
+
+function sendTeamMailtoFallback() {
+  const subject = encodeURIComponent(`DISC Team Report ‚Äî ${teamData.length} Participants`);
+  const body    = encodeURIComponent(buildPlainTextTeamReport());
+  triggerMailto(`mailto:${JERRY_EMAIL}?subject=${subject}&body=${body}`);
+}
+
+function triggerMailto(link) {
+  const a = document.createElement('a');
+  a.href = link; a.target = '_blank';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+}
+
+/* Plain-text fallback bodies */
+function buildPlainTextReport(scores, info) {
+  const pl  = getProfileLabel(scores.primary, scores.secondary);
+  const N   = NARRATIVES[scores.primary];
+  const date = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  return `DISC BEHAVIORAL ASSESSMENT ‚Äî INDIVIDUAL REPORT
+Clarity Partners Coaching Network | claritypartnersinc.com
+"Your success depends on clarity."
+===================================================
+
+Name:    ${info.name}
+Title:   ${info.title}
+Company: ${info.company}
+Date:    ${date}
+Profile: ${pl.name} (${scores.primary}${scores.secondary||''})
+
+DISC SCORES (Natural Style)
+---------------------------------
+D ‚Äì Dominance:          ${scores.natural.D}%  [${getIntensity(scores.natural.D)}]
+I ‚Äì Influence:           ${scores.natural.I}%  [${getIntensity(scores.natural.I)}]
+S ‚Äì Steadiness:          ${scores.natural.S}%  [${getIntensity(scores.natural.S)}]
+C ‚Äì Conscientiousness:   ${scores.natural.C}%  [${getIntensity(scores.natural.C)}]
+
+OVERVIEW
+---------------------------------
+${N.overview}
+
+Jerry Covella ¬∑ Master Coach ¬∑ Clarity Partners Coaching Network
+609-364-6705 ¬∑ jcovella@claritypartnersinc.com`;
+}
+
+function buildPlainTextTeamReport() {
+  const count = teamData.length;
+  const composite = {D:0,I:0,S:0,C:0};
+  teamData.forEach(d => ['D','I','S','C'].forEach(t => composite[t] += d.scores.natural[t]));
+  ['D','I','S','C'].forEach(t => composite[t] = Math.round(composite[t]/count));
+  const rows = teamData.map((d,i) => {
+    const rpl = getProfileLabel(d.scores.primary, d.scores.secondary);
+    return `${i+1}. ${d.info.name} ¬∑ ${d.info.title} ¬∑ ${rpl.name} ¬∑ D:${d.scores.natural.D}% I:${d.scores.natural.I}% S:${d.scores.natural.S}% C:${d.scores.natural.C}%`;
+  }).join('\n');
+  return `DISC TEAM REPORT ‚Äî ${count} Participants
+Clarity Partners Coaching Network | ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}
+
+TEAM COMPOSITE: D:${composite.D}% I:${composite.I}% S:${composite.S}% C:${composite.C}%
+
+PARTICIPANTS:
+${rows}
+
+Jerry Covella ¬∑ Master Coach ¬∑ Clarity Partners Coaching Network
+609-364-6705 ¬∑ jcovella@claritypartnersinc.com`;
+}
+
+/* ===================================================
+   TOAST NOTIFICATIONS
+=================================================== */
+let toastTimer;
+function showToast(icon, title, msg, duration=5000) {
+  const el = document.getElementById('email-toast');
+  document.getElementById('toast-icon').textContent  = icon;
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').innerHTML     = msg;
+  clearTimeout(toastTimer);
+  el.classList.add('show');
+  toastTimer = setTimeout(hideToast, duration);
+}
+function hideToast() {
+  document.getElementById('email-toast').classList.remove('show');
+}
+
+/* ===================================================
+   RESET ALL RESULTS
+=================================================== */
+function confirmReset() {
+  if (!confirm('‚ö† RESET ALL RESULTS\n\nThis will clear all participant data, group data, and team scores for this session.\n\nThis cannot be undone. Are you sure?')) return;
+  teamData = [];
+  currentScores = null;
+  currentGroup = '';
+  activeGroupFilter = '__all__';
+  userInfo = {};
+  responses = new Array(25).fill(null).map(() => ({most:null, least:null}));
+  currentQPage = 0;
+  ['f-name','f-company','f-title','f-email'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('g-new-name').value = '';
+  selectGroupMode('new');
+  try { localStorage.removeItem('disc_team_data'); } catch(e) {}
+  showScreen('group');
+  showToast('üîÑ', 'Session reset', 'All participant and group data cleared. Ready for a new session.', 4000);
+}
+
+/* ===================================================
+   TEAM DATA PERSISTENCE (localStorage)
+   Keeps team data across page refreshes on same device.
+   Cleared only when "Reset All Results" is used.
+=================================================== */
+function saveTeamData() {
+  try {
+    localStorage.setItem('disc_team_data', JSON.stringify(teamData));
+  } catch(e) {}
+}
+
+function loadTeamData() {
+  try {
+    var saved = localStorage.getItem('disc_team_data');
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        teamData = parsed;
+      }
+    }
+  } catch(e) {}
+}
+
+/* ===================================================
+   PRINT SUPPORT
+   Adds print-target class to active screen before print,
+   removes it after ‚Äî fixes the blank-page-on-print bug.
+=================================================== */
+window.addEventListener('beforeprint', function() {
+  var active = document.querySelector('.screen.active');
+  if (active) active.classList.add('print-target');
+});
+window.addEventListener('afterprint', function() {
+  document.querySelectorAll('.print-target').forEach(function(el) {
+    el.classList.remove('print-target');
+  });
+});
+
+/* ===================================================
+   INITIALIZATION
+   Use DOMContentLoaded for reliable startup
+=================================================== */
+function initApp() {
+  // EmailJS initialised with hardcoded credentials
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init(EMAIL.publicKey);
+  }
+  loadTeamData();
+
+  // Check if session already has a valid access grant (e.g. page refresh mid-session)
+  const granted = sessionStorage.getItem('disc_access_granted');
+  if (granted || ACCESS_CODE_CONFIG.DEV_MODE) {
+    try {
+      const data = granted ? JSON.parse(granted) : { type: 'group', clientName: 'Dev', code: 'TEST' };
+      // Populate join list with any saved groups
+      populateGroupJoinList();
+      if (getKnownGroups().length > 0) {
+        selectGroupMode('join');
+      }
+      showScreen('group');
+      setSessionBadge(data);
+    } catch(e) {
+      sessionStorage.removeItem('disc_access_granted');
+      showScreen('gate');
+    }
+  } else {
+    showScreen('gate');
+  }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
+
+/* ===================================================
+   ADMIN: CODE GENERATOR
+   Access via:  yourpage.html?admin=CLARITY2025
+   ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ
+   Generates formatted access codes you can paste
+   into your Google Sheet. Change the admin password
+   below before deploying.
+=================================================== */
+const ADMIN_PASSWORD = 'CLARITY2025'; // ‚Üê Change this before going live
+
+function checkAdminAccess() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('admin') === ADMIN_PASSWORD) {
+    document.getElementById('admin-panel').style.display = 'block';
+    // Auto-generate 5 codes on open
+    generateBatchCodes();
+  }
+}
+
+function generateCode(type) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I to avoid confusion
+  let code = 'DISC-';
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function generateBatchCodes() {
+  const type = document.getElementById('admin-type').value;
+  const qty  = parseInt(document.getElementById('admin-qty').value) || 5;
+  const uses = document.getElementById('admin-uses').value;
+  const client = document.getElementById('admin-client').value.trim() || 'New Client';
+  const expiry = document.getElementById('admin-expiry').value || '2026-12-31';
+
+  const usesAllowed = type === 'individual' ? 1 : (parseInt(uses) || 10);
+  const rows = [];
+
+  for (let i = 0; i < qty; i++) {
+    const code = generateCode(type);
+    rows.push(`${code}\t${type}\t${usesAllowed}\t0\t${client}\t${expiry}\tactive`);
+  }
+
+  const output = rows.join('\n');
+  document.getElementById('admin-output').value = output;
+  document.getElementById('admin-csv-preview').innerHTML = rows.map(r => {
+    const cols = r.split('\t');
+    const typeColor = cols[1] === 'individual' ? '#2060a0' : '#27855f';
+    const typeBg = cols[1] === 'individual' ? '#e8f0fb' : '#f0faf5';
+    return `<tr>
+      <td style="padding:8px 14px;font-family:monospace;font-weight:700;font-size:14px;color:#1a3a5c;">${cols[0]}</td>
+      <td style="padding:8px 14px;"><span style="background:${typeBg};color:${typeColor};padding:3px 10px;border-radius:10px;font-size:12px;font-weight:700;">${cols[1]}</span></td>
+      <td style="padding:8px 14px;font-size:13px;">${cols[2]}</td>
+      <td style="padding:8px 14px;font-size:13px;color:#718096;">${cols[4]}</td>
+      <td style="padding:8px 14px;font-size:13px;color:#718096;">${cols[5]}</td>
+    </tr>`;
+  }).join('');
+}
+
+function copyAdminCodes() {
+  const out = document.getElementById('admin-output');
+  out.select();
+  document.execCommand('copy');
+  const btn = document.getElementById('admin-copy-btn');
+  btn.textContent = '‚úì Copied!';
+  btn.style.background = '#38a169';
+  setTimeout(() => { btn.textContent = 'üìã Copy for Google Sheet'; btn.style.background = '#2060a0'; }, 2000);
+}
+
+// Run admin check after DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', checkAdminAccess);
+} else {
+  checkAdminAccess();
+}
+</script>
+
+<!-- ============================================================ -->
+<!-- ADMIN: CODE GENERATOR PANEL (hidden, ?admin=CLARITY2025)     -->
+<!-- ============================================================ -->
+<div id="admin-panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;overflow-y:auto;padding:20px;">
+  <div style="max-width:760px;margin:0 auto;background:white;border-radius:16px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <div style="font-size:22px;font-weight:800;color:#1a3a5c;">‚öôÔ∏è Admin: Access Code Generator</div>
+      <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:#e53e3e;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;">‚úï Close</button>
+    </div>
+    <div style="font-size:13px;color:#718096;margin-bottom:28px;">Generate codes, then paste them into your Google Sheet to activate.</div>
+
+    <!-- Generator controls -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px;">Assessment Type</label>
+        <select id="admin-type" onchange="generateBatchCodes()" style="width:100%;padding:10px 14px;border:1.5px solid #d0dce8;border-radius:8px;font-size:14px;font-family:inherit;">
+          <option value="individual">Individual (1 person)</option>
+          <option value="group">Group (team)</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px;">Codes to Generate</label>
+        <input id="admin-qty" type="number" min="1" max="50" value="5" oninput="generateBatchCodes()" style="width:100%;padding:10px 14px;border:1.5px solid #d0dce8;border-radius:8px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px;">Max Participants (group)</label>
+        <input id="admin-uses" type="number" min="1" max="200" value="10" oninput="generateBatchCodes()" style="width:100%;padding:10px 14px;border:1.5px solid #d0dce8;border-radius:8px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px;">Client / Company Name</label>
+        <input id="admin-client" type="text" placeholder="e.g. Acme Corp" oninput="generateBatchCodes()" style="width:100%;padding:10px 14px;border:1.5px solid #d0dce8;border-radius:8px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px;">Expiry Date</label>
+        <input id="admin-expiry" type="date" value="2026-12-31" oninput="generateBatchCodes()" style="width:100%;padding:10px 14px;border:1.5px solid #d0dce8;border-radius:8px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      </div>
+    </div>
+
+    <!-- Preview table -->
+    <div style="background:#f7fafc;border-radius:10px;overflow:hidden;border:1px solid #d0dce8;margin-bottom:16px;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#1a3a5c;color:white;">
+            <th style="padding:10px 14px;text-align:left;">Code</th>
+            <th style="padding:10px 14px;text-align:left;">Type</th>
+            <th style="padding:10px 14px;text-align:left;">Max Uses</th>
+            <th style="padding:10px 14px;text-align:left;">Client</th>
+            <th style="padding:10px 14px;text-align:left;">Expiry</th>
+          </tr>
+        </thead>
+        <tbody id="admin-csv-preview"></tbody>
+      </table>
+    </div>
+
+    <!-- Hidden textarea for copy -->
+    <textarea id="admin-output" style="position:absolute;left:-9999px;top:0;" readonly></textarea>
+
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <button id="admin-copy-btn" onclick="copyAdminCodes()" style="background:#2060a0;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;">üìã Copy for Google Sheet</button>
+      <button onclick="generateBatchCodes()" style="background:#e8f0fb;color:#2060a0;border:1.5px solid #bee3f8;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;">üîÑ Regenerate</button>
+      <span style="font-size:12px;color:#718096;">Paste into your Google Sheet ‚Äî each row is one code.<br>Columns: code | type | uses_allowed | uses_used | client_name | expiry | status</span>
+    </div>
+
+    <div style="margin-top:28px;padding:20px;background:#fff8e8;border:1px solid #f6c94e;border-radius:10px;">
+      <div style="font-size:13px;font-weight:700;color:#744210;margin-bottom:10px;">üìã Google Sheet Setup Reminder</div>
+      <div style="font-size:13px;color:#744210;line-height:1.7;">
+        <strong>Column headers (row 1):</strong> code ¬∑ type ¬∑ uses_allowed ¬∑ uses_used ¬∑ client_name ¬∑ expiry ¬∑ status<br>
+        <strong>Paste codes:</strong> starting at row 2<br>
+        <strong>Publish sheet:</strong> File ‚Üí Share ‚Üí Publish to web ‚Üí Sheet1 ‚Üí CSV ‚Üí copy URL ‚Üí paste into <code style="background:#fef3cd;padding:2px 6px;border-radius:4px;">ACCESS_CODE_CONFIG.SHEET_CSV_URL</code><br>
+        <strong>Mark used:</strong> When a code is used, update <em>uses_used</em> column (or automate via Zapier)
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- EMAIL SETUP MODAL                                             -->
+<!-- ============================================================ -->
+
+
+<!-- Toast notification -->
+<div id="email-toast" class="toast">
+  <div class="toast-icon" id="toast-icon">&#9989;</div>
+  <div class="toast-body">
+    <div class="toast-title" id="toast-title">Emails sent</div>
+    <div class="toast-msg"  id="toast-msg">Report delivered automatically.</div>
+  </div>
+  <button onclick="hideToast()" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:18px;padding:0;margin-left:8px;">&times;</button>
+</div>
+
+</body>
+</html>
 
