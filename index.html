@@ -149,9 +149,9 @@ body {
   padding: 16px 20px;
   font-size: 20px;
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: none;
   border: 2.5px solid var(--border);
   border-radius: 10px;
   outline: none;
@@ -920,14 +920,14 @@ body {
         maxlength="40"
         autocomplete="off"
         autocorrect="off"
-        autocapitalize="characters"
+        autocapitalize="off"
         spellcheck="false"
         oninput="formatGateCode(this)"
         onkeydown="if(event.key==='Enter')submitGateCode()"
       />
     </div>
 
-    <div id="gate-error" class="gate-error">&#10006; Invalid or already-used access code. Please check your email or contact Clarity Partners.</div>
+    <div id="gate-error" class="gate-error"></div>
     <div id="gate-checking" class="gate-checking">&#9203; Verifying your access code&hellip;</div>
 
     <button id="gate-btn" class="gate-btn" onclick="submitGateCode()">Unlock Assessment &rarr;</button>
@@ -1554,7 +1554,7 @@ async function pingZapierCodeUsed(code, data) {
 
 function showGateError(msg) {
   const errEl = document.getElementById('gate-error');
-  errEl.textContent = '‚úñ ' + msg;
+  errEl.textContent = msg;
   errEl.style.display = 'block';
 }
 
